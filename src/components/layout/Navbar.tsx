@@ -11,20 +11,15 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { User, Menu, LogOut, LayoutDashboard, Settings } from 'lucide-react'
+import { Database } from '@/types/database'
 
 export default async function Navbar() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    let profile = null
-    if (user) {
-        const { data } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', user.id)
-            .single()
-        profile = data
-    }
+    const { data: profile } = user
+        ? await supabase.from('profiles').select('*').eq('id', user.id).single()
+        : { data: null }
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-primary/10 bg-background/80 backdrop-blur-md">
@@ -39,16 +34,16 @@ export default async function Navbar() {
                         <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
                             Events
                         </Link>
-                        {profile?.role === 'agent' || profile?.role === 'admin' ? (
+                        {(profile?.role === 'agent' || profile?.role === 'admin') && (
                             <Link href="/agent" className="text-sm font-medium hover:text-primary transition-colors">
                                 Agent Panel
                             </Link>
-                        ) : null}
-                        {profile?.role === 'admin' ? (
+                        )}
+                        {profile?.role === 'admin' && (
                             <Link href="/admin" className="text-sm font-medium hover:text-primary transition-colors">
                                 Admin
                             </Link>
-                        ) : null}
+                        )}
                     </div>
                 </div>
 
@@ -56,44 +51,44 @@ export default async function Navbar() {
                     {user ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="rounded-full border border-primary/20 bg-primary/5">
+                                <Button variant="ghost" size="icon" className="rounded-full border border-primary/20 bg-primary/5 shadow-[0_0_15px_rgba(var(--primary),0.1)]">
                                     <User className="h-5 w-5 text-primary" />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-56">
+                            <DropdownMenuContent align="end" className="w-56 bg-card/95 backdrop-blur-lg border-primary/10">
                                 <DropdownMenuLabel>
                                     <div className="flex flex-col space-y-1">
                                         <p className="text-sm font-medium leading-none">{profile?.full_name || user.email}</p>
-                                        <p className="text-xs leading-none text-muted-foreground uppercase tracking-wider">
+                                        <p className="text-[10px] leading-none text-muted-foreground uppercase tracking-wider mt-1">
                                             {profile?.subscription_tier === 'vip' ? '👑 VIP Member' : 'Basic Member'}
                                         </p>
                                     </div>
                                 </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem asChild>
-                                    <Link href="/profile" className="cursor-pointer">
+                                <DropdownMenuSeparator className="bg-primary/5" />
+                                <DropdownMenuItem asChild className="hover:bg-primary/10 transition-colors">
+                                    <Link href="/profile" className="cursor-pointer flex items-center">
                                         <Settings className="mr-2 h-4 w-4" />
                                         <span>Profile Settings</span>
                                     </Link>
                                 </DropdownMenuItem>
                                 {profile?.role === 'agent' && (
-                                    <DropdownMenuItem asChild>
-                                        <Link href="/agent" className="cursor-pointer">
+                                    <DropdownMenuItem asChild className="hover:bg-primary/10 transition-colors">
+                                        <Link href="/agent" className="cursor-pointer flex items-center">
                                             <LayoutDashboard className="mr-2 h-4 w-4" />
                                             <span>My Events</span>
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
                                 {profile?.role === 'admin' && (
-                                    <DropdownMenuItem asChild>
-                                        <Link href="/admin" className="cursor-pointer">
+                                    <DropdownMenuItem asChild className="hover:bg-primary/10 transition-colors">
+                                        <Link href="/admin" className="cursor-pointer flex items-center">
                                             <LayoutDashboard className="mr-2 h-4 w-4" />
                                             <span>Admin Dashboard</span>
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" asChild>
+                                <DropdownMenuSeparator className="bg-primary/5" />
+                                <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer" asChild>
                                     <form action={signOut} className="w-full">
                                         <button type="submit" className="flex w-full items-center">
                                             <LogOut className="mr-2 h-4 w-4" />
@@ -108,7 +103,7 @@ export default async function Navbar() {
                             <Button variant="ghost" asChild>
                                 <Link href="/login">Login</Link>
                             </Button>
-                            <Button className="bg-primary hover:bg-primary/90" asChild>
+                            <Button className="bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(var(--primary),0.3)]" asChild>
                                 <Link href="/signup">Sign Up</Link>
                             </Button>
                         </div>
