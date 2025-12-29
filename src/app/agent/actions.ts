@@ -17,7 +17,7 @@ export async function createEvent(formData: FormData) {
     const imageUrl = formData.get('image_url') as string
     const minTierRequired = formData.get('min_tier_required') as 'basic' | 'vip'
 
-    const { error } = await supabase.from('events').insert({
+    const { error } = await (supabase.from('events') as any).insert({
         title,
         description,
         date_time: new Date(dateTime).toISOString(),
@@ -43,11 +43,12 @@ export async function updateEventStatus(eventId: string, status: 'approved' | 'r
     if (!user) throw new Error('Not authenticated')
 
     // Check if user is admin
-    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    const { data: profileData } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    const profile = (profileData as any) as { role: string } | null
     if (profile?.role !== 'admin') throw new Error('Not authorized')
 
-    const { error } = await supabase
-        .from('events')
+    const { error } = await (supabase
+        .from('events') as any)
         .update({ status })
         .eq('id', eventId)
 

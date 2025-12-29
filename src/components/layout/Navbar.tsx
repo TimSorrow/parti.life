@@ -17,9 +17,10 @@ export default async function Navbar() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    const { data: profile } = user
+    const { data: profileData } = user
         ? await supabase.from('profiles').select('*').eq('id', user.id).single()
         : { data: null }
+    const profile = profileData as any
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-primary/10 bg-background/80 backdrop-blur-md">

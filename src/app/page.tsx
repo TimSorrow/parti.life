@@ -10,16 +10,18 @@ export default async function LandingPage() {
 
   // Get current user profile for visibility logic
   const { data: { user } } = await supabase.auth.getUser()
-  const { data: profile } = user
+  const { data: profileData } = user
     ? await supabase.from('profiles').select('*').eq('id', user.id).single()
     : { data: null }
+  const profile = profileData as any
 
   // Fetch approved events
-  const { data: events } = await supabase
+  const { data: eventsData } = await supabase
     .from('events')
     .select('*')
     .eq('status', 'approved')
     .order('date_time', { ascending: true })
+  const events = eventsData as any[] | null
 
   return (
     <div className="min-h-screen">

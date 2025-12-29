@@ -1,8 +1,10 @@
 import { createClient } from '@/utils/supabase/server'
+import { Database } from '@/types/database'
 import { notFound, redirect } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Calendar, MapPin, Clock, Lock, ArrowLeft, Ticket, Share2, Info } from 'lucide-react'
+import { Calendar, MapPin, Clock, Lock, ArrowLeft, Ticket, Share2, Info, User as UserIcon } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 
 export default async function EventDetailsPage({
@@ -14,19 +16,22 @@ export default async function EventDetailsPage({
     const supabase = await createClient()
 
     // Fetch event and creator
-    const { data: event } = await supabase
+    const { data: eventData } = await supabase
         .from('events')
         .select('*, profiles(full_name)')
         .eq('id', id)
         .single()
+    const event = (eventData as any) as (Database['public']['Tables']['events']['Row'] & { profiles: { full_name: string | null } | null }) | null
 
     if (!event) return notFound()
 
     // Check auth and visibility
-    const { data: { user } } = await supabase.auth.getUser()
-    const { data: profile } = user
+    const { data: userData } = await supabase.auth.getUser()
+    const user = userData.user
+    const { data: profileData } = user
         ? await supabase.from('profiles').select('*').eq('id', user.id).single()
         : { data: null }
+    const profile = (profileData as any) as Database['public']['Tables']['profiles']['Row'] | null
 
     const isVipRequired = event.min_tier_required === 'vip'
     const isVipUser = profile?.subscription_tier === 'vip'

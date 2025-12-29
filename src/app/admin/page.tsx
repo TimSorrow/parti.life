@@ -6,6 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { Shield, Users, Inbox, Calendar, MapPin, User as UserIcon, Star } from 'lucide-react'
 import ModerationButtons from '@/components/admin/ModerationButtons'
+import { Button } from '@/components/ui/button'
+import { Database } from '@/types/database'
+
+type EventWithProfile = Database['public']['Tables']['events']['Row'] & {
+    profiles: { full_name: string | null } | null
+}
 
 export default async function AdminDashboard() {
     const supabase = await createClient()
@@ -13,28 +19,31 @@ export default async function AdminDashboard() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return redirect('/login')
 
-    const { data: profile } = await supabase
+    const { data: profileData } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single()
+    const profile = profileData as Database['public']['Tables']['profiles']['Row'] | null
 
     if (profile?.role !== 'admin') {
         return redirect('/')
     }
 
     // Fetch pending events
-    const { data: pendingEvents } = await supabase
+    const { data: pendingEventsData } = await supabase
         .from('events')
         .select('*, profiles(full_name)')
         .eq('status', 'pending')
         .order('created_at', { ascending: true })
+    const pendingEvents = pendingEventsData as EventWithProfile[] | null
 
     // Fetch all users/profiles
-    const { data: allProfiles } = await supabase
+    const { data: allProfilesData } = await supabase
         .from('profiles')
         .select('*')
         .order('created_at', { ascending: false })
+    const allProfiles = allProfilesData as Database['public']['Tables']['profiles']['Row'][] | null
 
     return (
         <div className="container px-4 py-8 mx-auto">
@@ -80,7 +89,7 @@ export default async function AdminDashboard() {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {pendingEvents.map((event: any) => (
+                                        {pendingEvents.map((event: EventWithProfile) => (
                                             <TableRow key={event.id} className="hover:bg-primary/5 transition-colors border-primary/5 group">
                                                 <TableCell className="pl-6 py-4">
                                                     <div className="flex items-center gap-3">

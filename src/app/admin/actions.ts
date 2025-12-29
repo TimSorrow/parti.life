@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { Database } from '@/types/database'
 
 export async function updateUserRole(userId: string, role: 'user' | 'agent' | 'admin') {
     const supabase = await createClient()
@@ -9,11 +10,12 @@ export async function updateUserRole(userId: string, role: 'user' | 'agent' | 'a
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('Not authenticated')
 
-    const { data: adminProfile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    const { data: adminProfileData } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    const adminProfile = (adminProfileData as any) as { role: string } | null
     if (adminProfile?.role !== 'admin') throw new Error('Not authorized')
 
-    const { error } = await supabase
-        .from('profiles')
+    const { error } = await (supabase
+        .from('profiles') as any)
         .update({ role })
         .eq('id', userId)
 
@@ -29,11 +31,12 @@ export async function updateUserTier(userId: string, subscription_tier: 'basic' 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('Not authenticated')
 
-    const { data: adminProfile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    const { data: adminProfileData } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    const adminProfile = (adminProfileData as any) as { role: string } | null
     if (adminProfile?.role !== 'admin') throw new Error('Not authorized')
 
-    const { error } = await supabase
-        .from('profiles')
+    const { error } = await (supabase
+        .from('profiles') as any)
         .update({ subscription_tier })
         .eq('id', userId)
 

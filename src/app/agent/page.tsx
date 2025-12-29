@@ -17,22 +17,24 @@ export default async function AgentDashboard({
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return redirect('/login')
 
-    const { data: profile } = await supabase
+    const { data: profileData } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single()
+    const profile = profileData as any
 
     if (profile?.role !== 'agent' && profile?.role !== 'admin') {
         return redirect('/')
     }
 
     // Fetch agent's events
-    const { data: events } = await supabase
+    const { data: eventsData } = await supabase
         .from('events')
         .select('*')
         .eq('created_by', user.id)
         .order('created_at', { ascending: false })
+    const events = eventsData as any[] | null
 
     const getStatusBadge = (status: string) => {
         switch (status) {
