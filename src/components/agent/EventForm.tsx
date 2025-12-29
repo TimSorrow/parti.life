@@ -9,7 +9,18 @@ import { createEvent } from '@/app/agent/actions'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Calendar, Image as ImageIcon, MapPin, Type, Crown } from 'lucide-react'
 
-export default function EventForm() {
+import { DiscoveredEvent } from '@/app/agent/discovery-actions'
+
+interface EventFormProps {
+    initialData?: Partial<DiscoveredEvent> | null
+}
+
+export default function EventForm({ initialData }: EventFormProps) {
+    // Format date for datetime-local input
+    const formattedDate = initialData?.date_time
+        ? new Date(initialData.date_time).toISOString().slice(0, 16)
+        : ''
+
     return (
         <Card className="border-primary/20 bg-card/30 backdrop-blur-md">
             <CardHeader>
@@ -25,21 +36,21 @@ export default function EventForm() {
                             <Label htmlFor="title" className="flex items-center gap-2">
                                 <Type className="h-4 w-4 text-primary" /> Event Title
                             </Label>
-                            <Input id="title" name="title" placeholder="E.g. Neon Beach Rave" required className="bg-background/50" />
+                            <Input id="title" name="title" defaultValue={initialData?.title} placeholder="E.g. Neon Beach Rave" required className="bg-background/50" />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="date_time" className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4 text-primary" /> Date and Time
                             </Label>
-                            <Input id="date_time" name="date_time" type="datetime-local" required className="bg-background/50" />
+                            <Input id="date_time" name="date_time" type="datetime-local" defaultValue={formattedDate} required className="bg-background/50" />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="location_name" className="flex items-center gap-2">
                                 <MapPin className="h-4 w-4 text-primary" /> Location Name
                             </Label>
-                            <Input id="location_name" name="location_name" placeholder="E.g. Playa de las Americas" required className="bg-background/50" />
+                            <Input id="location_name" name="location_name" defaultValue={initialData?.location_name} placeholder="E.g. Playa de las Americas" required className="bg-background/50" />
                         </div>
 
                         <div className="space-y-2">
@@ -62,7 +73,7 @@ export default function EventForm() {
                         <Label htmlFor="image_url" className="flex items-center gap-2">
                             <ImageIcon className="h-4 w-4 text-primary" /> Image URL
                         </Label>
-                        <Input id="image_url" name="image_url" placeholder="https://images.unsplash.com/..." className="bg-background/50" />
+                        <Input id="image_url" name="image_url" defaultValue={initialData?.image_url || ''} placeholder="https://images.unsplash.com/..." className="bg-background/50" />
                     </div>
 
                     <div className="space-y-2">
@@ -70,6 +81,7 @@ export default function EventForm() {
                         <Textarea
                             id="description"
                             name="description"
+                            defaultValue={initialData?.description}
                             placeholder="Tell us more about the event, the vibe, and what to expect..."
                             required
                             rows={5}

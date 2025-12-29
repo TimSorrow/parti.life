@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import EventForm from '@/components/agent/EventForm'
+import AgentDashboardClient from './AgentDashboardClient'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -68,7 +68,7 @@ export default async function AgentDashboard({
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-1">
-                        <EventForm />
+                        <AgentDashboardClient />
                     </div>
 
                     <div className="lg:col-span-2">
