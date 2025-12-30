@@ -10,6 +10,9 @@ export async function createEvent(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('Not authenticated')
 
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    const isAdmin = (profile as any)?.role === 'admin'
+
     const title = formData.get('title') as string
     const description = formData.get('description') as string
     const dateTime = formData.get('date_time') as string
@@ -25,12 +28,17 @@ export async function createEvent(formData: FormData) {
         image_url: imageUrl || null,
         min_tier_required: minTierRequired,
         created_by: user.id,
-        status: 'pending',
+        status: isAdmin ? 'approved' : 'pending',
     })
 
     if (error) {
         console.error('Error creating event:', error)
-        return redirect(`/agent?error=${error.message}`)
+        const redirectPath = isAdmin ? '/admin' : '/agent'
+        return redirect(`${redirectPath}?error=${error.message}`)
+    }
+
+    if (isAdmin) {
+        return redirect('/admin?message=Event created and approved successfully')
     }
 
     return redirect('/agent?message=Event submitted successfully and is pending approval')
