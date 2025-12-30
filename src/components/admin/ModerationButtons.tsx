@@ -1,10 +1,11 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { updateEventStatus } from '@/app/agent/actions'
+import { approveEvent, rejectEvent } from '@/app/admin/actions'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Check, X, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function ModerationButtons({ eventId }: { eventId: string }) {
     const router = useRouter()
@@ -12,13 +13,21 @@ export default function ModerationButtons({ eventId }: { eventId: string }) {
 
     const handleAction = async (status: 'approved' | 'rejected') => {
         setLoading(status)
-        const result = await updateEventStatus(eventId, status)
-        if (result.success) {
-            router.refresh()
-        } else {
-            alert('Error: ' + result.error)
+        try {
+            const result = status === 'approved'
+                ? await approveEvent(eventId)
+                : await rejectEvent(eventId)
+            if (result.success) {
+                toast.success(`Event ${status === 'approved' ? 'approved' : 'rejected'} successfully`)
+                router.refresh()
+            } else {
+                toast.error(`Failed to ${status === 'approved' ? 'approve' : 'reject'} event: ${result.error}`)
+            }
+        } catch (error) {
+            toast.error(`An error occurred while ${status === 'approved' ? 'approving' : 'rejecting'} the event`)
+        } finally {
+            setLoading(null)
         }
-        setLoading(null)
     }
 
     return (
