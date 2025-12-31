@@ -6,6 +6,7 @@ import DiscoveryTool from '@/components/agent/DiscoveryTool'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { DiscoveredEvent } from '@/app/agent/discovery-actions'
 import { FilePlus, Search } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function AgentDashboardClient() {
     const [draftEvent, setDraftEvent] = useState<DiscoveredEvent | null>(null)
@@ -14,6 +15,7 @@ export default function AgentDashboardClient() {
     const handleImport = (event: DiscoveredEvent) => {
         setDraftEvent(event)
         setActiveTab('manual') // Switch to form tab after import
+        toast.success('Event imported! Please review and submit the form below.')
     }
 
     return (

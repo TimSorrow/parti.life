@@ -67,63 +67,46 @@ export default async function AgentDashboard({
                 )}
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-2">
                         <AgentDashboardClient />
                     </div>
 
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-1">
                         <Card className="border-primary/10 bg-card/20 backdrop-blur-sm h-full">
                             <CardHeader>
                                 <CardTitle>My Submissions</CardTitle>
-                                <CardDescription>A history of all events you&apos;ve submitted.</CardDescription>
+                                <CardDescription>Your event history</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 {events && events.length > 0 ? (
-                                    <div className="overflow-x-auto">
-                                        <Table>
-                                            <TableHeader>
-                                                <TableRow className="hover:bg-transparent border-primary/10">
-                                                    <TableHead>Event</TableHead>
-                                                    <TableHead>Date</TableHead>
-                                                    <TableHead>Status</TableHead>
-                                                    <TableHead className="text-right">Tier</TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {events.map((event) => (
-                                                    <TableRow key={event.id} className="hover:bg-primary/5 transition-colors border-primary/10">
-                                                        <TableCell>
-                                                            <div className="flex flex-col">
-                                                                <span className="font-semibold text-foreground">{event.title}</span>
-                                                                <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                                                    <MapPin className="h-3 w-3" /> {event.location_name}
-                                                                </span>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <div className="flex flex-col text-xs">
-                                                                <span className="flex items-center gap-1 font-medium italic">
-                                                                    <Calendar className="h-3 w-3 text-primary/70" /> {new Date(event.date_time).toLocaleDateString()}
-                                                                </span>
-                                                                <span className="flex items-center gap-1 text-muted-foreground">
-                                                                    <Clock className="h-3 w-3" /> {new Date(event.date_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                                </span>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell>{getStatusBadge(event.status)}</TableCell>
-                                                        <TableCell className="text-right">
-                                                            <Badge variant="outline" className={event.min_tier_required === 'vip' ? 'border-amber-500/50 text-amber-500' : ''}>
-                                                                {event.min_tier_required.toUpperCase()}
-                                                            </Badge>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
+                                    <div className="space-y-3">
+                                        {events.slice(0, 5).map((event) => (
+                                            <div key={event.id} className="p-3 rounded-lg bg-primary/5 border border-primary/10 hover:bg-primary/10 transition-colors">
+                                                <div className="flex flex-col gap-2">
+                                                    <div>
+                                                        <h4 className="font-semibold text-sm line-clamp-1">{event.title}</h4>
+                                                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                                                            <MapPin className="h-3 w-3" /> {event.location_name}
+                                                        </p>
+                                                    </div>
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-xs text-muted-foreground">
+                                                            {new Date(event.date_time).toLocaleDateString()}
+                                                        </span>
+                                                        {getStatusBadge(event.status)}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {events.length > 5 && (
+                                            <p className="text-xs text-center text-muted-foreground italic pt-2">
+                                                +{events.length - 5} more events
+                                            </p>
+                                        )}
                                     </div>
                                 ) : (
-                                    <div className="text-center py-20 bg-primary/5 rounded-xl border border-dashed border-primary/20">
-                                        <p className="text-muted-foreground italic">You haven&apos;t submitted any events yet.</p>
+                                    <div className="text-center py-12 bg-primary/5 rounded-xl border border-dashed border-primary/20">
+                                        <p className="text-xs text-muted-foreground italic">No events yet</p>
                                     </div>
                                 )}
                             </CardContent>

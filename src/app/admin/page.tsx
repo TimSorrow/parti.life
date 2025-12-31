@@ -38,6 +38,13 @@ export default async function AdminDashboard({
         .order('created_at', { ascending: true })
     const pendingEvents = (pendingEventsData || []) as EventWithProfile[]
 
+    // Fetch all events
+    const { data: allEventsData } = await supabase
+        .from('events')
+        .select('*, profiles(full_name)')
+        .order('date_time', { ascending: false })
+    const allEvents = (allEventsData || []) as EventWithProfile[]
+
     // Fetch all users/profiles
     const { data: allProfilesData } = await supabase
         .from('profiles')
@@ -71,6 +78,7 @@ export default async function AdminDashboard({
 
                 <AdminDashboardClient
                     pendingEvents={pendingEvents}
+                    allEvents={allEvents}
                     allProfiles={allProfiles}
                 />
             </div>
