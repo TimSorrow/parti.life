@@ -40,7 +40,7 @@ export async function scrapeUrl(url: string): Promise<{ success: boolean; events
             if (title) {
                 events.push({
                     title,
-                    description: description || '',
+                    description: description || 'Event details to be added.',
                     date_time: dateStr || new Date().toISOString(),
                     location_name: 'Tenerife', // Default
                     image_url: image_url ? (image_url.startsWith('http') ? image_url : new URL(image_url, url).href) : null,
@@ -52,16 +52,28 @@ export async function scrapeUrl(url: string): Promise<{ success: boolean; events
         // If no events found with specific selectors, try to get at least the page title/meta
         if (events.length === 0) {
             const title = $('title').text() || $('h1').first().text()
-            const description = $('meta[name="description"]').attr('content') || $('p').first().text()
-            const image = $('meta[property="og:image"]').attr('content')
+
+            // Try multiple selectors for description
+            let description = $('meta[name="description"]').attr('content') ||
+                $('meta[property="og:description"]').attr('content') ||
+                $('.description, .content, .event-description, .descripcion').first().text().trim() ||
+                $('p').first().text().trim()
+
+            // Provide a meaningful fallback if still no description
+            if (!description || description.length < 10) {
+                description = `Event imported from ${new URL(url).hostname}. Please add more details about this event.`
+            }
+
+            const image = $('meta[property="og:image"]').attr('content') ||
+                $('img').first().attr('src')
 
             if (title) {
                 events.push({
                     title: title.trim(),
-                    description: description?.trim() || '',
+                    description: description.trim(),
                     date_time: new Date().toISOString(),
                     location_name: 'Tenerife',
-                    image_url: image || null,
+                    image_url: image ? (image.startsWith('http') ? image : new URL(image, url).href) : null,
                     source_url: url
                 })
             }
