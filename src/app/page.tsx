@@ -20,6 +20,7 @@ export default async function LandingPage() {
     .from('events')
     .select('*')
     .eq('status', 'approved')
+    .gte('date_time', new Date().toISOString())
     .order('date_time', { ascending: true })
   const events = eventsData as any[] | null
 
