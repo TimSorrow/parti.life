@@ -29,6 +29,14 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Development Workflow
+
+We follow a professional Git workflow to maintain code quality and scalability:
+
+- **Branching:** Use `feat/` for features and `fix/` for bugs. NEVER push directly to `main`.
+- **Commits:** Follow the [Conventional Commits](https://www.conventionalcommits.org/) standard.
+- **Rules:** Detailed rules can be found in `.agent/workflows/git-workflow.md`.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
