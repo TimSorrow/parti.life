@@ -1,3 +1,13 @@
+-- Sample Categories Seed
+INSERT INTO public.categories (name, icon)
+VALUES 
+('Nightlife', 'music'),
+('Beach & Boat', 'waves'),
+('Workshops', 'palette'),
+('Food & Drinks', 'glass-water'),
+('Underground', 'radio')
+ON CONFLICT (name) DO NOTHING;
+
 -- Note: This is a seed script for the Supabase SQL Editor.
 -- Since profiles are created via trigger, we mainly need to insert into auth.users (which requires specific Supabase functions)
 -- or manually update the profiles if they already exist.
