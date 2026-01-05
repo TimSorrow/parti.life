@@ -15,10 +15,10 @@ export default async function LandingPage() {
     : { data: null }
   const profile = profileData as any
 
-  // Fetch approved events
+  // Fetch approved events with categories
   const { data: eventsData } = await supabase
     .from('events')
-    .select('*')
+    .select('*, categories(*)')
     .eq('status', 'approved')
     .gte('date_time', new Date().toISOString())
     .order('date_time', { ascending: true })
