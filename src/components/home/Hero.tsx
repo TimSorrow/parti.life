@@ -12,7 +12,7 @@ export default function Hero() {
                     <img
                         alt="Hero Event"
                         className="w-full h-full object-cover opacity-100"
-                        src="/images/hero-bg-v3.webp"
+                        src="/images/hero_concert_background.png"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90 z-20"></div>
                     <div className="absolute inset-0 bg-black/20 z-10"></div>

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 type Event = Database['public']['Tables']['events']['Row'] & {
     categories?: {
         name: string
-        icon: string
+        icon_name: string
     } | null
 }
 type Profile = Database['public']['Tables']['profiles']['Row']
