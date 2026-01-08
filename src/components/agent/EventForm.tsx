@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -7,15 +8,30 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createEvent } from '@/app/agent/actions'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Calendar, Image as ImageIcon, MapPin, Type, Crown } from 'lucide-react'
+import { Calendar, Image as ImageIcon, MapPin, Type, Crown, Tags } from 'lucide-react'
+import { createClient } from '@/utils/supabase/client'
+import { Database } from '@/types/database'
 
 import { DiscoveredEvent } from '@/app/agent/discovery-actions'
+
+type Category = Database['public']['Tables']['categories']['Row']
 
 interface EventFormProps {
     initialData?: Partial<DiscoveredEvent> | null
 }
 
 export default function EventForm({ initialData }: EventFormProps) {
+    const [categories, setCategories] = useState<Category[]>([])
+    const supabase = createClient()
+
+    useEffect(() => {
+        async function fetchCategories() {
+            const { data } = await supabase.from('categories').select('*').order('name')
+            if (data) setCategories(data)
+        }
+        fetchCategories()
+    }, [supabase])
+
     // Format date for datetime-local input
     const formattedDate = initialData?.date_time
         ? new Date(initialData.date_time).toISOString().slice(0, 16)
@@ -54,6 +70,24 @@ export default function EventForm({ initialData }: EventFormProps) {
                         </div>
 
                         <div className="space-y-2">
+                            <Label htmlFor="category_id" className="flex items-center gap-2">
+                                <Tags className="h-4 w-4 text-primary" /> Category
+                            </Label>
+                            <Select name="category_id">
+                                <SelectTrigger className="bg-background/50">
+                                    <SelectValue placeholder="Select category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {categories.map((category) => (
+                                        <SelectItem key={category.id} value={category.id}>
+                                            {category.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="space-y-2">
                             <Label htmlFor="min_tier_required" className="flex items-center gap-2">
                                 <Crown className="h-4 w-4 text-primary" /> Minimum Tier Required
                             </Label>
@@ -67,13 +101,13 @@ export default function EventForm({ initialData }: EventFormProps) {
                                 </SelectContent>
                             </Select>
                         </div>
-                    </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="image_url" className="flex items-center gap-2">
-                            <ImageIcon className="h-4 w-4 text-primary" /> Image URL
-                        </Label>
-                        <Input id="image_url" name="image_url" defaultValue={initialData?.image_url || ''} placeholder="https://images.unsplash.com/..." className="bg-background/50" />
+                        <div className="space-y-2">
+                            <Label htmlFor="image_url" className="flex items-center gap-2">
+                                <ImageIcon className="h-4 w-4 text-primary" /> Image URL
+                            </Label>
+                            <Input id="image_url" name="image_url" defaultValue={initialData?.image_url || ''} placeholder="https://images.unsplash.com/..." className="bg-background/50" />
+                        </div>
                     </div>
 
                     <div className="space-y-2">

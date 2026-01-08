@@ -1,12 +1,17 @@
-import { createClient } from '@/utils/supabase/server'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Calendar, MapPin, Lock, ChevronRight } from 'lucide-react'
+import { Calendar, MapPin, Lock, ChevronRight, Tags } from 'lucide-react'
 import Link from 'next/link'
 import { Database } from '@/types/database'
+import * as LucideIcons from 'lucide-react'
 
-type Event = Database['public']['Tables']['events']['Row']
+type Event = Database['public']['Tables']['events']['Row'] & {
+    categories?: {
+        name: string
+        icon: string
+    } | null
+}
 type Profile = Database['public']['Tables']['profiles']['Row']
 
 interface EventCardProps {
@@ -22,6 +27,20 @@ export default function EventCard({ event, userProfile }: EventCardProps) {
 
     const canView = !isVipRequired || isVipUser || isAdmin || isCreator
 
+    // Helper to get Lucide icon component by name
+    const getIcon = (name: string | undefined | null) => {
+        if (!name) return <Tags className="h-3 w-3 mr-1" />
+
+        // Lucide React exports icons in PascalCase (e.g. 'music' -> 'Music', 'glass-water' -> 'GlassWater')
+        const pascalName = name
+            .split('-')
+            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+            .join('')
+
+        const Icon = (LucideIcons as any)[pascalName] || (LucideIcons as any)[name.charAt(0).toUpperCase() + name.slice(1)] || Tags
+        return <Icon className="h-3 w-3 mr-1" />
+    }
+
     return (
         <Card className="group overflow-hidden bg-card/40 border-primary/10 hover:border-primary/30 transition-all duration-300 backdrop-blur-sm flex flex-col h-full">
             <div className="relative aspect-video overflow-hidden">
@@ -31,7 +50,7 @@ export default function EventCard({ event, userProfile }: EventCardProps) {
                     alt={event.title}
                     className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 ${!canView ? 'blur-xl grayscale' : ''}`}
                 />
-                <div className="absolute top-3 left-3 flex gap-2">
+                <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                     {isVipRequired && (
                         <Badge variant="secondary" className="bg-amber-500/90 text-white border-0 shadow-lg">
                             <Lock className="h-3 w-3 mr-1" />
@@ -41,6 +60,12 @@ export default function EventCard({ event, userProfile }: EventCardProps) {
                     <Badge variant="outline" className="bg-black/50 backdrop-blur-md border-primary/20 text-primary-foreground">
                         {new Date(event.date_time).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     </Badge>
+                    {event.categories && (
+                        <Badge variant="outline" className="bg-primary/20 backdrop-blur-md border-primary/30 text-primary-foreground">
+                            {getIcon(event.categories.icon)}
+                            {event.categories.name}
+                        </Badge>
+                    )}
                 </div>
 
                 {!canView && (

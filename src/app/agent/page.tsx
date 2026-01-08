@@ -4,7 +4,7 @@ import AgentDashboardClient from './AgentDashboardClient'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Calendar, Clock, MapPin, CheckCircle2, XCircle, Timer } from 'lucide-react'
+import { Calendar, Clock, MapPin, CheckCircle2, XCircle, Timer, Tags } from 'lucide-react'
 
 export default async function AgentDashboard({
     searchParams,
@@ -28,10 +28,10 @@ export default async function AgentDashboard({
         return redirect('/')
     }
 
-    // Fetch agent's events
+    // Fetch agent's events with categories
     const { data: eventsData } = await supabase
         .from('events')
-        .select('*')
+        .select('*, categories(*)')
         .eq('created_by', user.id)
         .order('created_at', { ascending: false })
     const events = eventsData as any[] | null
@@ -85,9 +85,16 @@ export default async function AgentDashboard({
                                                 <div className="flex flex-col gap-2">
                                                     <div>
                                                         <h4 className="font-semibold text-sm line-clamp-1">{event.title}</h4>
-                                                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                                                            <MapPin className="h-3 w-3" /> {event.location_name}
-                                                        </p>
+                                                        <div className="flex flex-wrap gap-2 mt-1">
+                                                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                                                <MapPin className="h-3 w-3" /> {event.location_name}
+                                                            </p>
+                                                            {event.categories && (
+                                                                <p className="text-[10px] text-primary/70 flex items-center gap-1 font-medium bg-primary/5 px-1.5 py-0.5 rounded">
+                                                                    <Tags className="h-2.5 w-2.5" /> {event.categories.name}
+                                                                </p>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-xs text-muted-foreground">

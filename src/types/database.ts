@@ -38,6 +38,26 @@ export interface Database {
                     updated_at?: string
                 }
             }
+            categories: {
+                Row: {
+                    id: string
+                    name: string
+                    icon: string
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    name: string
+                    icon: string
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    name?: string
+                    icon?: string
+                    created_at?: string
+                }
+            }
             events: {
                 Row: {
                     id: string
@@ -48,6 +68,7 @@ export interface Database {
                     location_coords: Json | null
                     image_url: string | null
                     created_by: string
+                    category_id: string | null
                     status: 'pending' | 'approved' | 'rejected'
                     min_tier_required: 'basic' | 'vip'
                     created_at: string
@@ -62,6 +83,7 @@ export interface Database {
                     location_coords?: Json | null
                     image_url?: string | null
                     created_by: string
+                    category_id?: string | null
                     status?: 'pending' | 'approved' | 'rejected'
                     min_tier_required?: 'basic' | 'vip'
                     created_at?: string
@@ -76,6 +98,7 @@ export interface Database {
                     location_coords?: Json | null
                     image_url?: string | null
                     created_by?: string
+                    category_id?: string | null
                     status?: 'pending' | 'approved' | 'rejected'
                     min_tier_required?: 'basic' | 'vip'
                     created_at?: string

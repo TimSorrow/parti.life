@@ -18,6 +18,7 @@ export async function createEvent(formData: FormData) {
     const dateTime = formData.get('date_time') as string
     const locationName = formData.get('location_name') as string
     const imageUrl = formData.get('image_url') as string
+    const categoryId = formData.get('category_id') as string
     const minTierRequired = formData.get('min_tier_required') as 'basic' | 'vip'
 
     const { error } = await (supabase.from('events') as any).insert({
@@ -26,6 +27,7 @@ export async function createEvent(formData: FormData) {
         date_time: new Date(dateTime).toISOString(),
         location_name: locationName,
         image_url: imageUrl || null,
+        category_id: categoryId || null,
         min_tier_required: minTierRequired,
         created_by: user.id,
         status: isAdmin ? 'approved' : 'pending',
