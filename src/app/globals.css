@@ -7,29 +7,35 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-heading: var(--font-outfit), var(--font-sans);
 
-  --color-primary: #FF4D00; /* Vibrant orange */
-  --color-secondary: #00A3FF; /* Bright blue */
-  --color-purple: #A855F7; /* Vibrant Purple */
-  --color-background: #050505; 
+  --color-primary: #FF4D00;
+  /* Vibrant orange */
+  --color-secondary: #00A3FF;
+  /* Bright blue */
+  --color-purple: #A855F7;
+  /* Vibrant Purple */
+  --color-background: #050505;
   --color-foreground: #ffffff;
-  
-  --color-surface: #0F0F11; 
-  --color-surface-2: #18181B; 
+
+  --color-surface: #0F0F11;
+  --color-surface-2: #18181B;
   --color-accent-yellow: #FFD600;
 
   --color-card: #0F0F11;
   --color-card-foreground: #ffffff;
-  
+
   --color-border: rgba(255, 255, 255, 0.08);
 
   --animate-gradient: gradient-xy 6s ease infinite;
 
   @keyframes gradient-xy {
-    0%, 100% {
-        background-position: 0% 50%;
+
+    0%,
+    100% {
+      background-position: 0% 50%;
     }
+
     50% {
-        background-position: 100% 50%;
+      background-position: 100% 50%;
     }
   }
 }
@@ -56,8 +62,9 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     background-color: #050505;
@@ -67,15 +74,18 @@
 
 @layer utilities {
   .text-image-clip {
-    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDpWgm_txMARMVMW9_HUfpy-UWEzdQs4icOEOqjjpo4tWg-fjWx9PMu6QVtsVfvJgTxLQng3Yddb-CkGBchs8eWz6QfHQ-lsYvijNV9pSUQCPt2wsw3U89GmWE8y5dkgZKwEcF6iDxHeV3FEnD6fCUswks_XrHkMeh33ScF6M_55nracGaI_wlQVSQOsJShB9Iuqz4PA6Klos604DbMrebHHqx9O8t6X2B6CpmYLuI1kHrhWkviUSURczQ4f1MvoNV8QYKlnWO-nLw);
+    background-image: url(/images/hero-bg-v3.webp);
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    background-color: #fff; 
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    background-color: #fff;
+    /* Fallback for contrast */
   }
-  
+
   .glass {
     background: rgba(10, 10, 10, 0.7);
     backdrop-filter: blur(12px);

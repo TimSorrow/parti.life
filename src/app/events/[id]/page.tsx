@@ -71,7 +71,7 @@ export default async function EventDetailsPage({
             {/* Hero Section */}
             <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
                 <img
-                    src={event.image_url || 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3'}
+                    src={event.image_url || "/images/hero-bg-v2.webp"}
                     alt={event.title}
                     className="w-full h-full object-cover"
                 />

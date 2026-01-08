@@ -8,17 +8,18 @@ export default function Hero() {
             {/* Hero Background with Images & Gradients */}
             <div className="absolute inset-0 w-full h-full">
                 <div className="relative w-full h-full">
+                    {/* Centered sharp image - Cropped version to remove side screens */}
                     <img
                         alt="Hero Event"
-                        className="w-full h-full object-cover opacity-40"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRTe1C0owJhUg4KGciryFSLSOtW-p6S2EbxlFnEgvvAZjfLQvd-scAyRYzQtlocCg6q14afSZ6rQFEcfjPJvV3_yMRbRVOudBVRlDkc2ZN8L2RL6rbMpA-bzYhyM6nqCDrev0x09xypoIFRBQtHo8c0qjT-D37lMNyRt1H_lzelwi1ZqnG_gvvWv4jlfL9SMcfCY5EaB2fOlG6wPCRLS_2pfX4L8ZRslO5Qu23k3l1tqUfI3ZmzcuIvvOf3dDYcPcc88ld-t0oFoo"
+                        className="w-full h-full object-cover opacity-100"
+                        src="/images/hero-bg-v3.webp"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/70 to-background"></div>
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple/10 via-background/50 to-background"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90 z-20"></div>
+                    <div className="absolute inset-0 bg-black/20 z-10"></div>
                 </div>
             </div>
 
-            <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full pb-20 pt-10">
+            <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full pb-20 pt-10 z-30">
                 <div className="max-w-5xl text-center mx-auto w-full">
                     <div className="mb-10 sm:mb-12 select-none">
                         <h1 className="text-[5rem] sm:text-[7rem] md:text-[9rem] lg:text-[11rem] leading-none font-display font-black tracking-tighter text-image-clip drop-shadow-2xl">

@@ -32,7 +32,7 @@ export default async function Navbar() {
                     </div>
 
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link href="/#events" className="text-gray-300 hover:text-primary font-medium transition-colors text-sm uppercase tracking-wide">
+                        <Link href="/events" className="text-gray-300 hover:text-primary font-medium transition-colors text-sm uppercase tracking-wide">
                             Events
                         </Link>
                         <Link href="/venues" className="text-gray-300 hover:text-primary font-medium transition-colors text-sm uppercase tracking-wide">

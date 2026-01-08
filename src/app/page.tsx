@@ -93,10 +93,10 @@ export default async function LandingPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { name: 'Beach Clubs', icon: Palmtree, color: 'from-blue-600/20 to-cyan-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAr_zaxkI3PC8EGebMFTxSRvTozhV0UksO5fE6ILaink8PBJpVJw7WwKqmQs5lVdzAoZqCDtHUnsWb-xQJ4_QPqP7w1j4O5-JeYuGiccFcPxsktUWSnL1FQNrnXsJsEQ0iOavQJK3EPKf4sFwSKYWGcfSEDNPFMb-KMvH9wtwTsC6GTPtjC-r443zfEW7PNQz_RrHu9fZxWr8HGZH0xLHkdnmDXUBgCIZ3LmFbDa2xlG_R930hAdGAJIQWNvfilloWz0UQIQxkT7bA' },
-              { name: 'Techno Raves', icon: Music, color: 'from-purple/20 to-primary/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRTe1C0owJhUg4KGciryFSLSOtW-p6S2EbxlFnEgvvAZjfLQvd-scAyRYzQtlocCg6q14afSZ6rQFEcfjPJvV3_yMRbRVOudBVRlDkc2ZN8L2RL6rbMpA-bzYhyM6nqCDrev0x09xypoIFRBQtHo8c0qjT-D37lMNyRt1H_lzelwi1ZqnG_gvvWv4jlfL9SMcfCY5EaB2fOlG6wPCRLS_2pfX4L8ZRslO5Qu23k3l1tqUfI3ZmzcuIvvOf3dDYcPcc88ld-t0oFoo' },
-              { name: 'Secret Garden', icon: Ghost, color: 'from-green-600/20 to-emerald-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDpWgm_txMARMVMW9_HUfpy-UWEzdQs4icOEOqjjpo4tWg-fjWx9PMu6QVtsVfvJgTxLQng3Yddb-CkGBchs8eWz6QfHQ-lsYvijNV9pSUQCPt2wsw3U89GmWE8y5dkgZKwEcF6iDxHeV3FEnD6fCUswks_XrHkMeh33ScF6M_55nracGaI_wlQVSQOsJShB9Iuqz4PA6Klos604DbMrebHHqx9O8t6X2B6CpmYLuI1kHrhWkviUSURczQ4f1MvoNV8QYKlnWO-nLw' },
-              { name: 'Luxury VIP', icon: TrendingUp, color: 'from-amber-600/20 to-orange-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRTe1C0owJhUg4KGciryFSLSOtW-p6S2EbxlFnEgvvAZjfLQvd-scAyRYzQtlocCg6q14afSZ6rQFEcfjPJvV3_yMRbRVOudBVRlDkc2ZN8L2RL6rbMpA-bzYhyM6nqCDrev0x09xypoIFRBQtHo8c0qjT-D37lMNyRt1H_lzelwi1ZqnG_gvvWv4jlfL9SMcfCY5EaB2fOlG6wPCRLS_2pfX4L8ZRslO5Qu23k3l1tqUfI3ZmzcuIvvOf3dDYcPcc88ld-t0oFoo' }
+              { name: 'Beach Clubs', icon: Palmtree, color: 'from-blue-600/20 to-cyan-500/20', img: '/images/vibe-beach.png' },
+              { name: 'Techno Raves', icon: Music, color: 'from-purple/20 to-primary/20', img: '/images/vibe-techno.png' },
+              { name: 'Secret Garden', icon: Ghost, color: 'from-green-600/20 to-emerald-500/20', img: '/images/vibe-garden.png' },
+              { name: 'Luxury VIP', icon: TrendingUp, color: 'from-amber-600/20 to-orange-500/20', img: '/images/vibe-vip.png' }
             ].map((vibe, i) => (
               <Link href={`/search?vibe=${vibe.name}`} key={i} className="group relative aspect-[3/4] rounded-3xl overflow-hidden border border-white/5">
                 <img src={vibe.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60" alt={vibe.name} />
@@ -133,7 +133,7 @@ export default async function LandingPage() {
             {[1, 2, 3].map((item) => (
               <div key={item} className="flex items-center gap-6 p-4 rounded-3xl bg-white/5 border border-white/5 hover:border-primary/30 transition-all group">
                 <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0">
-                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr_zaxkI3PC8EGebMFTxSRvTozhV0UksO5fE6ILaink8PBJpVJw7WwKqmQs5lVdzAoZqCDtHUnsWb-xQJ4_QPqP7w1j4O5-JeYuGiccFcPxsktUWSnL1FQNrnXsJsEQ0iOavQJK3EPKf4sFwSKYWGcfSEDNPFMb-KMvH9wtwTsC6GTPtjC-r443zfEW7PNQz_RrHu9fZxWr8HGZH0xLHkdnmDXUBgCIZ3LmFbDa2xlG_R930hAdGAJIQWNvfilloWz0UQIQxkT7bA" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Trending" />
+                  <img src="/images/hero-bg-v2.webp" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Trending" />
                 </div>
                 <div className="flex-grow">
                   <div className="flex items-center justify-between mb-2">

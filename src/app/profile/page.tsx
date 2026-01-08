@@ -25,8 +25,8 @@ export default async function ProfilePage() {
             {/* Profile Header / Hero */}
             <div className="relative h-64 sm:h-80 w-full overflow-hidden">
                 <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRTe1C0owJhUg4KGciryFSLSOtW-p6S2EbxlFnEgvvAZjfLQvd-scAyRYzQtlocCg6q14afSZ6rQFEcfjPJvV3_yMRbRVOudBVRlDkc2ZN8L2RL6rbMpA-bzYhyM6nqCDrev0x09xypoIFRBQtHo8c0qjT-D37lMNyRt1H_lzelwi1ZqnG_gvvWv4jlfL9SMcfCY5EaB2fOlG6wPCRLS_2pfX4L8ZRslO5Qu23k3l1tqUfI3ZmzcuIvvOf3dDYcPcc88ld-t0oFoo"
-                    className="w-full h-full object-cover opacity-40 blur-sm scale-105"
+                    src="/images/hero-bg-v2.webp"
+                    className="w-full h-full object-cover opacity-50 blur-[2px] scale-105"
                     alt="Cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent"></div>
@@ -137,7 +137,7 @@ export default async function ProfilePage() {
                             <div className="space-y-4">
                                 <div className="p-4 sm:p-6 rounded-3xl bg-white/5 border border-white/5 hover:border-primary/30 transition-all group flex flex-col sm:flex-row items-center gap-6">
                                     <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0">
-                                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr_zaxkI3PC8EGebMFTxSRvTozhV0UksO5fE6ILaink8PBJpVJw7WwKqmQs5lVdzAoZqCDtHUnsWb-xQJ4_QPqP7w1j4O5-JeYuGiccFcPxsktUWSnL1FQNrnXsJsEQ0iOavQJK3EPKf4sFwSKYWGcfSEDNPFMb-KMvH9wtwTsC6GTPtjC-r443zfEW7PNQz_RrHu9fZxWr8HGZH0xLHkdnmDXUBgCIZ3LmFbDa2xlG_R930hAdGAJIQWNvfilloWz0UQIQxkT7bA" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Ticket" />
+                                        <img src="/images/hero-bg-v2.webp" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Ticket" />
                                     </div>
                                     <div className="flex-grow text-center sm:text-left">
                                         <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
