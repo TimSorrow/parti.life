@@ -20,7 +20,7 @@ export default function AgentDashboardClient() {
 
     return (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8 bg-secondary/50 border border-primary/10">
+            <TabsList className="grid w-full grid-cols-2 mb-8 bg-purple/50 border border-primary/10">
                 <TabsTrigger value="manual" className="flex items-center gap-2 py-3">
                     <FilePlus className="h-4 w-4" /> Manual Submission
                 </TabsTrigger>

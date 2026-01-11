@@ -1,61 +1,91 @@
 import { Button } from '@/components/ui/button'
-import { Sparkles, Calendar, ArrowRight } from 'lucide-react'
+import { Search, Calendar as CalendarIcon } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Hero() {
     return (
-        <section className="relative overflow-hidden pt-20 pb-16 md:pt-32 md:pb-24">
-            {/* Background decoration */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-20 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/40 blur-[120px]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] rounded-full bg-blue-600/30 blur-[100px]" />
+        <section className="relative pt-20 h-screen max-h-[900px] min-h-[700px] w-full overflow-hidden bg-background flex items-center">
+            {/* Hero Background with Images & Gradients */}
+            <div className="absolute inset-0 w-full h-full">
+                <div className="relative w-full h-full">
+                    {/* Centered sharp image - Cropped version to remove side screens */}
+                    <img
+                        alt="Hero Event"
+                        className="w-full h-full object-cover opacity-100"
+                        src="/images/hero_concert_background.png"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90 z-20"></div>
+                    <div className="absolute inset-0 bg-black/20 z-10"></div>
+                </div>
             </div>
 
-            <div className="container px-4 mx-auto text-center relative z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-6 animate-pulse">
-                    <Sparkles className="h-3 w-3" />
-                    The Ultimate Tenerife Party Guide
+            <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full pb-20 pt-10 z-30">
+                <div className="max-w-5xl text-center mx-auto w-full">
+                    <div className="mb-10 sm:mb-12 select-none">
+                        <h1 className="text-[5rem] sm:text-[7rem] md:text-[9rem] lg:text-[11rem] leading-none font-display font-black tracking-tighter text-image-clip drop-shadow-2xl">
+                            parti.life
+                        </h1>
+                        <p className="text-lg sm:text-xl text-gray-300 font-light mt-4 tracking-wide max-w-2xl mx-auto">
+                            The ultimate guide to Tenerife&apos;s nightlife.
+                        </p>
+                    </div>
+
+                    {/* Search Bar */}
+                    <div className="max-w-3xl mx-auto relative group">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple via-primary to-purple rounded-2xl opacity-75 blur-sm group-hover:opacity-100 transition duration-500 animate-gradient"></div>
+                        <div className="relative bg-[#121212] rounded-2xl p-2 sm:p-3 shadow-2xl flex flex-col md:flex-row gap-2">
+                            <div className="flex-grow flex items-center bg-[#1E1E1E] rounded-xl px-4 py-3 border border-white/5 focus-within:border-primary/50 transition-all">
+                                <Search className="text-gray-500 mr-3 h-5 w-5" />
+                                <input
+                                    className="bg-transparent border-none focus:ring-0 w-full text-white placeholder-gray-500 font-medium text-lg outline-none"
+                                    placeholder="Search events, artists..."
+                                    type="text"
+                                />
+                            </div>
+                            <div className="flex-grow md:flex-none md:w-56 flex items-center bg-[#1E1E1E] rounded-xl px-4 py-3 border border-white/5 focus-within:border-primary/50 transition-all">
+                                <CalendarIcon className="text-gray-500 mr-3 h-5 w-5" />
+                                <input
+                                    className="bg-transparent border-none focus:ring-0 w-full text-white placeholder-gray-500 font-medium text-lg outline-none"
+                                    placeholder="Any Date"
+                                    type="text"
+                                />
+                            </div>
+                            <button className="bg-gradient-to-r from-primary to-purple hover:from-primary/90 hover:to-purple/90 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center">
+                                Search
+                            </button>
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-400 items-center justify-center px-2">
+                            <span className="font-bold uppercase tracking-wider text-gray-500">Trending:</span>
+                            <Link href="/search?q=Carnival" className="hover:text-primary transition-colors flex items-center group">
+                                <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary mr-2 transition-colors"></span>Carnival
+                            </Link>
+                            <Link href="/search?q=Boat Parties" className="hover:text-primary transition-colors flex items-center group">
+                                <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary mr-2 transition-colors"></span>Boat Parties
+                            </Link>
+                            <Link href="/search?q=Rooftops" className="hover:text-primary transition-colors flex items-center group">
+                                <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary mr-2 transition-colors"></span>Rooftops
+                            </Link>
+                        </div>
+                    </div>
                 </div>
 
-                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                    Discover Tenerife&apos;s <br />
-                    <span className="text-primary italic">Best Nightlife</span>
-                </h1>
-
-                <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-                    From golden sunset beach clubs to exclusive underground raves.
-                    The only platform you need to find the island&apos;s most vibrant events.
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-lg shadow-[0_0_30px_rgba(var(--primary),0.4)]" asChild>
-                        <Link href="#events">
-                            Explore Events <ArrowRight className="ml-2 h-5 w-5" />
-                        </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" className="rounded-full px-8 border-primary/20 hover:bg-primary/5 text-lg" asChild>
-                        <Link href="/signup?role=agent">
-                            Post an Event
-                        </Link>
-                    </Button>
-                </div>
-
-                <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60">
-                    <div className="flex flex-col items-center">
-                        <span className="text-3xl font-bold text-white">50+</span>
-                        <span className="text-xs uppercase tracking-widest">Active Events</span>
+                {/* Stats Bar */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 sm:mt-24 border-t border-white/10 pt-8 max-w-5xl mx-auto w-full">
+                    <div className="text-center">
+                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">50+</div>
+                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Active Events</div>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <span className="text-3xl font-bold text-white">12</span>
-                        <span className="text-xs uppercase tracking-widest">Secret Parties</span>
+                    <div className="text-center">
+                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">12</div>
+                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Secret Parties</div>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <span className="text-3xl font-bold text-white">5k+</span>
-                        <span className="text-xs uppercase tracking-widest">Party Goers</span>
+                    <div className="text-center">
+                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">5k+</div>
+                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Party Goers</div>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <span className="text-3xl font-bold text-white">100%</span>
-                        <span className="text-xs uppercase tracking-widest">Island Vibe</span>
+                    <div className="text-center">
+                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">100%</div>
+                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Island Vibe</div>
                     </div>
                 </div>
             </div>

@@ -22,6 +22,7 @@ interface EventFormProps {
 
 export default function EventForm({ initialData }: EventFormProps) {
     const [categories, setCategories] = useState<Category[]>([])
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string>((initialData as any)?.category_id || '')
     const supabase = createClient()
 
     useEffect(() => {
@@ -73,7 +74,11 @@ export default function EventForm({ initialData }: EventFormProps) {
                             <Label htmlFor="category_id" className="flex items-center gap-2">
                                 <Tags className="h-4 w-4 text-primary" /> Category
                             </Label>
-                            <Select name="category_id">
+                            <input type="hidden" name="category_id" value={selectedCategoryId} />
+                            <Select
+                                value={selectedCategoryId}
+                                onValueChange={setSelectedCategoryId}
+                            >
                                 <SelectTrigger className="bg-background/50">
                                     <SelectValue placeholder="Select category" />
                                 </SelectTrigger>
