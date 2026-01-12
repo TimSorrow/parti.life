@@ -105,6 +105,47 @@ export interface Database {
                     updated_at?: string
                 }
             }
+            venues: {
+                Row: {
+                    id: string
+                    name: string
+                    category: 'clubs' | 'cafes' | 'restaurants'
+                    description: string | null
+                    image_url: string | null
+                    location: string
+                    rating: number
+                    capacity: number | null
+                    is_open: boolean
+                    created_at: string
+                    updated_at: string
+                }
+                Insert: {
+                    id?: string
+                    name: string
+                    category: 'clubs' | 'cafes' | 'restaurants'
+                    description?: string | null
+                    image_url?: string | null
+                    location: string
+                    rating?: number
+                    capacity?: number | null
+                    is_open?: boolean
+                    created_at?: string
+                    updated_at?: string
+                }
+                Update: {
+                    id?: string
+                    name?: string
+                    category?: 'clubs' | 'cafes' | 'restaurants'
+                    description?: string | null
+                    image_url?: string | null
+                    location?: string
+                    rating?: number
+                    capacity?: number | null
+                    is_open?: boolean
+                    created_at?: string
+                    updated_at?: string
+                }
+            }
         }
     }
 }
