@@ -101,10 +101,15 @@ export default async function EventDetailsPage({
                                 <span className="material-symbols-outlined text-primary text-xl">calendar_today</span>
                                 {formattedDate}
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary text-xl">location_on</span>
-                                {event.location_name}
-                            </div>
+                            <Link 
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location_name + ' Tenerife')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer group"
+                            >
+                                <span className="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform">location_on</span>
+                                <span className="underline decoration-white/20 underline-offset-4 group-hover:decoration-primary/50 transition-colors">{event.location_name}</span>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -145,12 +150,27 @@ export default async function EventDetailsPage({
                                     ))}
                                 </div>
 
-                                <div className="bg-[#121212] w-full aspect-square rounded-[2rem] border border-white/5 flex items-center justify-center relative overflow-hidden group-hover:border-white/10 transition-colors">
-                                    <span className="material-symbols-outlined text-4xl text-gray-700">map</span>
-                                    <div className="absolute bottom-6 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full border border-white/5 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                                        Interactive map coming soon
+                                <div className="bg-[#121212] w-full aspect-square rounded-[2rem] border border-white/5 relative overflow-hidden group-hover:border-white/10 transition-colors group/map">
+                                    <iframe 
+                                        src={`https://maps.google.com/maps?q=${encodeURIComponent(event.location_name + ' Tenerife')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                        width="100%" 
+                                        height="100%" 
+                                        style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) contrast(85%)' }} 
+                                        allowFullScreen 
+                                        loading="lazy" 
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        className="absolute inset-0 opacity-80"
+                                    ></iframe>
+                                    <Link 
+                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location_name + ' Tenerife')}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="absolute inset-0 z-10"
+                                        aria-label="Open in Google Maps"
+                                    />
+                                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-2.5 bg-black/80 backdrop-blur-md rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white shadow-xl opacity-0 translate-y-2 group-hover/map:translate-y-0 group-hover/map:opacity-100 transition-all duration-300 z-20 whitespace-nowrap flex items-center justify-center gap-2 pointer-events-none">
+                                        <MapPin className="h-3 w-3 text-primary" /> Open in Google Maps
                                     </div>
-                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent"></div>
                                 </div>
                             </div>
                         </section>
