@@ -18,12 +18,6 @@ export default function Hero() {
         <section className="relative min-h-screen w-full flex flex-col items-center justify-center pt-20">
             {/* Aggressive Background Splitting */}
             <div className="absolute inset-0 z-0 overflow-hidden">
-                <div className="absolute inset-0 bg-primary opacity-20 skew-y-12 translate-y-1/2"></div>
-                <img 
-                    className="w-full h-full object-cover grayscale contrast-150 brightness-50" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_YheFBNhq8WggFdfr6qQ5ZYpUJ_FcQbmSOibWQm8deUOL9Iwn2tb5c16jGSxveHbDIPD5hXHUfqt4-_PUYdOssN9_x3Tj4r4H5YK2i_PKUUrSB4bfSmnFchPcg3QG5RPPbF7CchPgU2p0JHQAU5ZUwK9bfrYGb4vexX658l9xdHiabUskX-9yMtygzSotgKrFqUOmfIZDmicN58W7i4jn1suLXkdNV08hVzIaS6U1fqNOPLin2p19BHDqZZnBCnh-q9QFKR3Wn60"
-                    alt="Nightlife Background"
-                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80"></div>
                 {/* Dynamic Geometric Shapes */}
                 <div className="absolute top-1/4 -left-20 w-96 h-96 bg-secondary opacity-10 blur-3xl rounded-full"></div>
