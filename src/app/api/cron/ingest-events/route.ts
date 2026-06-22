@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { scrapeUrl } from '@/app/agent/discovery-actions'
-import { createClient } from '@/utils/supabase/server'
+import { scrapeUrlInternal } from '@/lib/agent/scraper'
+import { createAdminClient } from '@/utils/supabase/admin'
 
 // Permitir más tiempo de ejecución si se usa en Vercel (hasta 5 min)
 export const maxDuration = 300 
@@ -16,11 +16,11 @@ const targetUrls = [
 export async function GET(request: Request) {
     // Basic protection against unauthorized calls
     const authHeader = request.headers.get('authorization');
-    if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
     // Find an Admin user to assign these events to
     const { data: adminUsers } = await supabase
@@ -40,8 +40,7 @@ export async function GET(request: Request) {
 
     for (const url of targetUrls) {
         try {
-            console.log(`[AI Agent] Scraping ${url}...`);
-            const scrapingResult = await scrapeUrl(url);
+            const scrapingResult = await scrapeUrlInternal(url);
 
             if (!scrapingResult.success || !scrapingResult.events) {
                 results.push({ url, status: 'failed', error: scrapingResult.error });
@@ -51,6 +50,13 @@ export async function GET(request: Request) {
             let insertedCount = 0;
 
             for (const event of scrapingResult.events) {
+                // Validate date_time format
+                const parsedDate = new Date(event.date_time);
+                if (isNaN(parsedDate.getTime())) {
+                    console.warn(`[AI Agent] Skipping event "${event.title}" due to invalid date_time: "${event.date_time}"`);
+                    continue;
+                }
+
                 // Check if event already exists (deduplication by title)
                 const { data: existing } = await supabase
                     .from('events')

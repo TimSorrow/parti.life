@@ -6,9 +6,9 @@ export default async function VenuesPage() {
 
     // Get current user profile for admin check
     const { data: { user } } = await supabase.auth.getUser()
-    const { data: profileData } = user
+    const { data: profileData } = (user
         ? await supabase.from('profiles').select('*').eq('id', user.id).single()
-        : { data: null }
+        : { data: null }) as any
 
     const isAdmin = profileData?.role === 'admin'
 

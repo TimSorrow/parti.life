@@ -10,7 +10,7 @@ export default async function DebugAdminPage() {
         ? await supabase.from('profiles').select('*').eq('id', user.id).single()
         : { data: null, error: null }
     
-    const profile = profileData.data
+    const profile = profileData.data as any
 
     return (
         <div className="container mx-auto p-8">

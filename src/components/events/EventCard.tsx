@@ -1,7 +1,6 @@
-import { Lock, Heart, MapPin, Ticket } from 'lucide-react'
+import { Lock, MapPin, Calendar, Heart } from 'lucide-react'
 import Link from 'next/link'
 import { Database } from '@/types/database'
-import { Button } from '@/components/ui/button'
 
 type Event = Database['public']['Tables']['events']['Row'] & {
     categories?: {
@@ -29,90 +28,85 @@ export default function EventCard({ event, userProfile, index = 0 }: EventCardPr
     const day = eventDate.getDate()
     const month = eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()
     const weekday = eventDate.toLocaleDateString('en-US', { weekday: 'short' })
-    const formattedDate = `${weekday}, ${day} ${eventDate.toLocaleDateString('en-US', { month: 'long' })}`
+    const formattedDate = `${weekday}, ${month} ${day}`
+
+    // Alternate hover border colors based on index for the Persona vibe
+    const hoverBorders = [
+        'group-hover:border-primary',
+        'group-hover:border-secondary',
+        'group-hover:border-accent-purple',
+        'group-hover:border-white'
+    ]
+    const activeHoverBorder = hoverBorders[index % hoverBorders.length]
+
+    const textColors = [
+        'text-primary',
+        'text-secondary',
+        'text-accent-purple',
+        'text-white'
+    ]
+    const activeTextColor = textColors[index % textColors.length]
+
+    const badgeBg = [
+        'bg-primary text-white -rotate-3',
+        'bg-secondary text-black rotate-2',
+        'bg-accent-purple text-white -rotate-1',
+        'bg-white text-black rotate-3'
+    ]
+    const activeBadgeBg = badgeBg[index % badgeBg.length]
+
+    const formattedPrice = (event as any).price ? `€${(event as any).price}` : 'FREE'
 
     return (
-        <article className="group relative bg-[#0F0F11] rounded-[2rem] overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 h-full flex flex-col">
-            {/* Image Section */}
-            <div className="aspect-[1.2/1] relative overflow-hidden">
+        <article className="group relative w-full">
+            <div className={`event-card-jagged relative h-[550px] overflow-hidden bg-black border-4 border-white ${activeHoverBorder} transition-colors duration-300`}>
+                {/* Image */}
                 <img
                     alt={event.title}
-                    className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${!canView ? 'blur-xl grayscale' : 'opacity-90 group-hover:opacity-100'}`}
+                    className={`w-full h-full object-cover grayscale contrast-125 transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0 ${!canView ? 'blur-xl' : ''}`}
                     src={event.image_url || 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3'}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F11] via-transparent to-transparent opacity-60"></div>
 
-                {/* Badges */}
-                <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-                    {index % 4 === 0 && (
-                        <span className="px-3 py-1 bg-primary text-[10px] font-black uppercase tracking-widest text-white rounded-full shadow-lg">
-                            Featured
-                        </span>
-                    )}
-                    {isVipRequired && (
-                        <span className="px-3 py-1 bg-amber-500 text-[10px] font-black uppercase tracking-widest text-white rounded-full shadow-lg flex items-center gap-1">
-                            <Lock className="h-2.5 w-2.5" /> VIP
-                        </span>
-                    )}
+                {/* Price Speech Bubble */}
+                <div className="absolute top-6 right-6 z-10">
+                    <div className="speech-bubble text-xl font-black italic">
+                        {formattedPrice}
+                    </div>
                 </div>
 
-                {/* Wishlist Button */}
-                <button className="absolute top-4 right-4 z-10 h-8 w-8 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-primary hover:border-primary transition-all group/heart">
-                    <Heart className="h-4 w-4 transition-transform group-hover/heart:scale-110" />
-                </button>
-
-                {/* Date Overlay (Top Left Style if preferred, but following reference layout) */}
-                <div className="absolute bottom-4 left-4 z-10 flex flex-col items-center justify-center h-12 w-12 rounded-xl bg-black/60 backdrop-blur-md border border-white/10">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-none">{month}</span>
-                    <span className="text-xl font-black text-white leading-none mt-1">{day}</span>
-                </div>
-
+                {/* Locked / VIP overlay */}
                 {!canView && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-20">
-                        <Lock className="h-8 w-8 text-amber-500 mb-2" />
-                        <h4 className="text-sm font-black text-white px-4 text-center uppercase tracking-widest">VIP Exclusive</h4>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md z-20">
+                        <Lock className="h-12 w-12 text-primary mb-3" />
+                        <h4 className="text-xl font-black text-white px-4 text-center uppercase tracking-widest font-headline">VIP Exclusive</h4>
                     </div>
                 )}
-            </div>
 
-            {/* Content Section */}
-            <div className="p-6 flex flex-col flex-grow">
-                <div className="flex items-center gap-2 mb-3">
-                    {event.categories && (
-                        <span className="text-[10px] font-black uppercase tracking-widest text-primary">
-                            {event.categories.name}
-                        </span>
-                    )}
-                    <span className="h-1 w-1 rounded-full bg-gray-700"></span>
-                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                        {formattedDate}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+
+                {/* Card Content */}
+                <div className="absolute bottom-10 left-8 right-8 z-10">
+                    {/* Badge */}
+                    <span className={`${activeBadgeBg} font-black italic uppercase px-4 py-1 text-xs tracking-widest mb-4 inline-block transform font-headline`}>
+                        {event.categories?.name || 'Party'}
                     </span>
-                </div>
 
-                <Link href={canView ? `/events/${event.id}` : '#'}>
-                    <h3 className="text-xl font-display font-black text-white mb-3 leading-tight group-hover:text-primary transition-colors line-clamp-2 uppercase italic tracking-tighter">
-                        {event.title}
-                    </h3>
-                </Link>
+                    {/* Title */}
+                    <Link href={canView ? `/events/${event.id}` : '#'}>
+                        <h3 className="font-headline text-3xl font-black italic mb-4 leading-[0.9] text-white uppercase transform skew-x-[-10deg] hover:text-primary transition-colors line-clamp-2">
+                            {event.title}
+                        </h3>
+                    </Link>
 
-                <p className="text-gray-500 text-xs mb-6 flex items-center">
-                    <MapPin className="h-3 w-3 mr-1.5 text-gray-700" />
-                    {event.location_name}
-                </p>
-
-                <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
-                    <div>
-                        <span className="text-2xl font-black text-white italic tracking-tighter">
-                            {(event as any).price ? `€${(event as any).price}` : 'FREE'}
+                    {/* Metadata */}
+                    <div className="flex flex-col gap-2 text-white/80 font-black italic text-xs uppercase font-headline">
+                        <span className="flex items-center gap-2">
+                            <Calendar className={`h-4 w-4 ${activeTextColor}`} /> {formattedDate}
                         </span>
-                        {(event as any).price && <span className="text-[8px] font-bold text-gray-600 block uppercase tracking-widest mt-1">Starting from</span>}
+                        <span className="flex items-center gap-2">
+                            <MapPin className={`h-4 w-4 ${activeTextColor}`} /> {event.location_name}
+                        </span>
                     </div>
-
-                    <Button asChild className="rounded-full bg-white/5 border border-white/10 hover:bg-primary hover:border-primary text-white text-[10px] font-black uppercase tracking-widest px-6 h-10 transition-all active:scale-95">
-                        <Link href={canView ? `/events/${event.id}` : '#'}>
-                            {canView ? 'Get Tickets' : 'Locked'}
-                        </Link>
-                    </Button>
                 </div>
             </div>
         </article>

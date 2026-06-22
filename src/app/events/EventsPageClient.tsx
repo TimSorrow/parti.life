@@ -6,8 +6,10 @@ import DateStrip from '@/components/events/DateStrip'
 import FilterChips from '@/components/events/FilterChips'
 import AfishaEventCard from '@/components/events/AfishaEventCard'
 import { Button } from '@/components/ui/button'
-import { CalendarSearch, Megaphone, Plus, Loader2 } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { CalendarSearch, Megaphone, Plus, Loader2, Search } from 'lucide-react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { startOfDay, endOfDay, format } from 'date-fns'
 
 interface Category {
@@ -33,10 +35,14 @@ interface Event {
 }
 
 export default function EventsPageClient() {
+    const searchParams = useSearchParams()
+    const urlQuery = searchParams.get('q') || searchParams.get('search') || ''
+
     const [categories, setCategories] = useState<Category[]>([])
     const [events, setEvents] = useState<Event[]>([])
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+    const [searchQuery, setSearchQuery] = useState(urlQuery)
     const [isLoading, setIsLoading] = useState(true)
 
     const supabase = createClient()
@@ -86,9 +92,26 @@ export default function EventsPageClient() {
         fetchEvents()
     }, [fetchEvents])
 
+    useEffect(() => {
+        setSearchQuery(urlQuery)
+    }, [urlQuery])
+
+    // Client-side filtering for fast, responsive search
+    const filteredEvents = events.filter(event => {
+        if (!searchQuery.trim()) return true
+        const query = searchQuery.toLowerCase()
+        return (
+            event.title.toLowerCase().includes(query) ||
+            (event.description || '').toLowerCase().includes(query) ||
+            event.location_name.toLowerCase().includes(query)
+        )
+    })
+
+    const isFiltered = selectedDate || selectedCategory || searchQuery.trim()
+
     // Split events into featured (first 2) and regular
-    const featuredEvents = events.slice(0, 2)
-    const regularEvents = events.slice(2)
+    const featuredEvents = filteredEvents.slice(0, 2)
+    const regularEvents = filteredEvents.slice(2)
 
     return (
         <div className="min-h-screen bg-[#050505] text-white pb-24">
@@ -101,6 +124,18 @@ export default function EventsPageClient() {
                     <p className="text-gray-500 text-lg">
                         Find the best parties, concerts, and experiences.
                     </p>
+                </div>
+
+                {/* Search Bar */}
+                <div className="relative mb-6">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+                    <Input
+                        type="text"
+                        placeholder="Search festivals, parties, locations..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-12 pr-4 py-6 bg-white/5 border-white/10 rounded-2xl text-white placeholder-gray-500 focus-visible:ring-primary focus-visible:border-primary text-base"
+                    />
                 </div>
 
                 {/* Date Strip */}
@@ -122,10 +157,11 @@ export default function EventsPageClient() {
                 </div>
 
                 {/* Active Filters Info */}
-                {(selectedDate || selectedCategory) && (
+                {isFiltered && (
                     <div className="mt-6 flex items-center gap-3 text-sm text-gray-400">
                         <span>
                             Showing events
+                            {searchQuery.trim() && ` matching "${searchQuery}"`}
                             {selectedDate && ` on ${format(selectedDate, 'MMMM d, yyyy')}`}
                             {selectedCategory && categories.find(c => c.id === selectedCategory) &&
                                 ` in ${categories.find(c => c.id === selectedCategory)?.name}`
@@ -135,6 +171,7 @@ export default function EventsPageClient() {
                             onClick={() => {
                                 setSelectedDate(null)
                                 setSelectedCategory(null)
+                                setSearchQuery('')
                             }}
                             className="text-primary hover:underline"
                         >
@@ -150,10 +187,10 @@ export default function EventsPageClient() {
                     <div className="flex items-center justify-center py-32">
                         <Loader2 className="h-8 w-8 text-primary animate-spin" />
                     </div>
-                ) : events.length > 0 ? (
+                ) : filteredEvents.length > 0 ? (
                     <>
                         {/* Featured Events Section */}
-                        {!selectedDate && !selectedCategory && featuredEvents.length > 0 && (
+                        {!isFiltered && featuredEvents.length > 0 && (
                             <section className="mb-12">
                                 <h2 className="text-xl font-bold text-white mb-6 flex items-center">
                                     <span className="w-1 h-6 bg-primary rounded-full mr-3" />
@@ -175,13 +212,13 @@ export default function EventsPageClient() {
                         <section>
                             <h2 className="text-xl font-bold text-white mb-6 flex items-center">
                                 <span className="w-1 h-6 bg-primary rounded-full mr-3" />
-                                {selectedDate || selectedCategory ? 'Results' : 'All Events'}
+                                {isFiltered ? 'Results' : 'All Events'}
                                 <span className="ml-2 text-sm font-normal text-gray-500">
-                                    ({(selectedDate || selectedCategory ? events : regularEvents).length} events)
+                                    ({(isFiltered ? filteredEvents : regularEvents).length} events)
                                 </span>
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                {(selectedDate || selectedCategory ? events : regularEvents).map((event, index) => (
+                                {(isFiltered ? filteredEvents : regularEvents).map((event, index) => (
                                     <React.Fragment key={event.id}>
                                         <AfishaEventCard
                                             event={event as any}
@@ -212,7 +249,7 @@ export default function EventsPageClient() {
                         </section>
 
                         {/* Load More */}
-                        {events.length >= 12 && (
+                        {filteredEvents.length >= 12 && (
                             <div className="mt-16 text-center">
                                 <Button
                                     variant="outline"
@@ -230,17 +267,18 @@ export default function EventsPageClient() {
                         <CalendarSearch className="h-12 w-12 text-gray-700 mx-auto mb-4" />
                         <h3 className="text-xl font-bold text-white mb-2">No events found</h3>
                         <p className="text-gray-500 mb-6">
-                            {selectedDate || selectedCategory
+                            {isFiltered
                                 ? 'Try adjusting your filters.'
                                 : 'Check back later for new updates.'
                             }
                         </p>
-                        {(selectedDate || selectedCategory) && (
+                        {isFiltered && (
                             <Button
                                 variant="outline"
                                 onClick={() => {
                                     setSelectedDate(null)
                                     setSelectedCategory(null)
+                                    setSearchQuery('')
                                 }}
                                 className="rounded-lg border-white/10"
                             >

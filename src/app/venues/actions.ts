@@ -54,14 +54,13 @@ export async function updateVenue(id: string, venueData: VenueUpdate) {
         .from('profiles')
         .select('role')
         .eq('id', user.id)
-        .single()
+        .single() as any
 
     if (profile?.role !== 'admin') {
         return { error: 'Not authorized. Admin access required.' }
     }
 
-    const { data, error } = await supabase
-        .from('venues')
+    const { data, error } = await (supabase.from('venues') as any)
         .update({
             ...venueData,
             updated_at: new Date().toISOString()
@@ -94,14 +93,13 @@ export async function createVenue(venueData: VenueInsert) {
         .from('profiles')
         .select('role')
         .eq('id', user.id)
-        .single()
+        .single() as any
 
     if (profile?.role !== 'admin') {
         return { error: 'Not authorized. Admin access required.' }
     }
 
-    const { data, error } = await supabase
-        .from('venues')
+    const { data, error } = await (supabase.from('venues') as any)
         .insert(venueData)
         .select()
         .single()
@@ -129,14 +127,13 @@ export async function deleteVenue(id: string) {
         .from('profiles')
         .select('role')
         .eq('id', user.id)
-        .single()
+        .single() as any
 
     if (profile?.role !== 'admin') {
         return { error: 'Not authorized. Admin access required.' }
     }
 
-    const { error } = await supabase
-        .from('venues')
+    const { error } = await (supabase.from('venues') as any)
         .delete()
         .eq('id', id)
 

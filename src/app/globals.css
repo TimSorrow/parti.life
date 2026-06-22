@@ -4,36 +4,28 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-heading: var(--font-outfit), var(--font-sans);
+  --font-headline: var(--font-epilogue), sans-serif;
+  --font-body: var(--font-manrope), sans-serif;
+  --font-label: var(--font-plus-jakarta-sans), sans-serif;
 
-  --color-primary: #FF4D00;
-  /* Vibrant orange */
-  --color-secondary: #00A3FF;
-  /* Bright blue */
-  --color-purple: #A855F7;
-  /* Vibrant Purple */
-  --color-background: #050505;
-  --color-foreground: #ffffff;
+  --color-primary: #ff003c; /* Persona 5 Red */
+  --color-secondary: #00d4ff; /* Persona 3 Cyan */
+  --color-accent-purple: #a533ff;
+  --color-background: #000000;
+  --color-surface: #0a0a0a;
+  --color-on-surface: #ffffff;
 
-  --color-surface: #0F0F11;
-  --color-surface-2: #18181B;
-  --color-accent-yellow: #FFD600;
-
-  --color-card: #0F0F11;
+  --color-card: #0a0a0a;
   --color-card-foreground: #ffffff;
-
-  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.1);
 
   --animate-gradient: gradient-xy 6s ease infinite;
 
   @keyframes gradient-xy {
-
     0%,
     100% {
       background-position: 0% 50%;
     }
-
     50% {
       background-position: 100% 50%;
     }
@@ -42,22 +34,22 @@
 
 :root {
   --radius: 0.75rem;
-  --background: #050505;
+  --background: #000000;
   --foreground: #ffffff;
-  --primary: #FF4D00;
-  --secondary: #00A3FF;
-  --purple: #A855F7;
-  --card: #0F0F11;
+  --primary: #ff003c;
+  --secondary: #00d4ff;
+  --purple: #a533ff;
+  --card: #0a0a0a;
   --card-foreground: #ffffff;
-  --popover: #0F0F11;
+  --popover: #0a0a0a;
   --popover-foreground: #ffffff;
-  --muted: #1f2937;
-  --muted-foreground: #94a3b8;
-  --accent: #1f2937;
+  --muted: #1a1a1a;
+  --muted-foreground: #a0a0a0;
+  --accent: #1a1a1a;
   --accent-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: #FF4D00;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #ff003c;
 }
 
 @layer base {
@@ -66,8 +58,8 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    background-color: #050505;
+    @apply bg-background text-on-surface font-body;
+    background-color: #000000;
     color: #ffffff;
   }
 }
@@ -83,7 +75,6 @@
     color: transparent;
     filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
     background-color: #fff;
-    /* Fallback for contrast */
   }
 
   .glass {
@@ -91,6 +82,12 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-panel {
+    background: rgba(25, 25, 25, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .animate-gradient {
@@ -106,3 +103,85 @@
     display: none;
   }
 }
+
+/* Persona Aesthetics */
+.skew-container {
+  transform: skewY(-3deg);
+}
+.skew-content {
+  transform: skewY(3deg);
+}
+.jagged-edge {
+  clip-path: polygon(0% 0%, 100% 5%, 98% 95%, 2% 100%);
+}
+.jagged-edge-reverse {
+  clip-path: polygon(2% 5%, 100% 0%, 95% 100%, 0% 95%);
+}
+
+.knockout-text {
+  background: #ffffff;
+  color: #000000;
+  padding: 0.1em 0.3em;
+  display: inline-block;
+  transform: rotate(-2deg);
+}
+
+.persona-btn {
+  position: relative;
+  background: #000;
+  color: #fff;
+  padding: 0.75rem 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  transition: all 0.2s ease;
+  border: 2px solid #fff;
+}
+.persona-btn:hover {
+  background: #ff003c;
+  transform: scale(1.05) rotate(-1deg);
+  border-color: #ff003c;
+}
+
+.hero-logo-mask {
+  background: #fff;
+  color: #000;
+  padding: 0 20px;
+  display: inline-block;
+  transform: skewX(-10deg) rotate(-2deg);
+  box-shadow: 10px 10px 0px #ff003c;
+}
+
+.search-bar-persona {
+  background: #000;
+  border: 4px solid #fff;
+  transform: rotate(-1.5deg);
+  clip-path: polygon(0 15%, 100% 0, 98% 85%, 2% 100%);
+}
+
+.vibe-card {
+  clip-path: polygon(5% 0%, 100% 2%, 95% 100%, 0% 98%);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.vibe-card:hover {
+  transform: scale(1.03) rotate(1deg);
+}
+
+.event-card-jagged {
+  clip-path: polygon(0 0, 100% 3%, 97% 100%, 4% 96%);
+}
+
+.speech-bubble {
+  position: relative;
+  background: #fff;
+  color: #000;
+  padding: 5px 12px;
+  font-weight: 800;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
+  display: inline-block;
+  transform: rotate(5deg);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #ff003c; }

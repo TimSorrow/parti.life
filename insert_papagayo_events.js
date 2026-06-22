@@ -4,77 +4,77 @@ const fs = require('fs');
 const papagayoEvents = [
     {
         "title": "Follow",
-        "date": "2026-01-08",
+        "date": "2026-05-08",
         "time": "23:00",
         "lineup": ["Aitor Robles", "Rayconen"],
         "location": "Papagayo Tenerife"
     },
     {
         "title": "The Hype",
-        "date": "2026-01-08",
+        "date": "2026-05-08",
         "time": "23:05",
         "lineup": ["Dj Vojtano", "El Morinke"],
         "location": "Sala El Nido (Papagayo Tenerife)"
     },
     {
         "title": "La Loka",
-        "date": "2026-01-09",
+        "date": "2026-05-09",
         "time": "23:00",
         "lineup": ["Adrián Denniz", "Mike"],
         "location": "Papagayo Tenerife"
     },
     {
         "title": "Few",
-        "date": "2026-01-09",
+        "date": "2026-05-09",
         "time": "23:05",
         "lineup": ["M.U.S.E", "Barto +1"],
         "location": "Sala El Nido (Papagayo Tenerife)"
     },
     {
         "title": "Essence",
-        "date": "2026-01-10",
+        "date": "2026-05-10",
         "time": "23:00",
         "lineup": ["Alex Wellmann", "Beto Uña +1"],
         "location": "Papagayo Tenerife"
     },
     {
         "title": "Hija De Fruta",
-        "date": "2026-01-10",
+        "date": "2026-05-10",
         "time": "23:05",
         "lineup": ["Adrián Denniz", "Mike"],
         "location": "Sala El Nido (Papagayo Tenerife)"
     },
     {
         "title": "Freak & Chic",
-        "date": "2026-01-11",
+        "date": "2026-05-11",
         "time": "23:00",
         "lineup": ["Beto Uña"],
         "location": "Papagayo Tenerife"
     },
     {
         "title": "Flirt",
-        "date": "2026-01-11",
+        "date": "2026-05-11",
         "time": "23:05",
         "lineup": [],
         "location": "Sala El Nido (Papagayo Tenerife)"
     },
     {
         "title": "Move On",
-        "date": "2026-01-14",
+        "date": "2026-05-14",
         "time": "23:00",
         "lineup": ["Jacobo Padilla"],
         "location": "Papagayo Tenerife"
     },
     {
         "title": "Follow",
-        "date": "2026-01-15",
+        "date": "2026-05-15",
         "time": "23:00",
         "lineup": ["Ana Pak", "Castion"],
         "location": "Papagayo Tenerife"
     },
     {
         "title": "The Hype",
-        "date": "2026-01-15",
+        "date": "2026-05-15",
         "time": "23:05",
         "lineup": ["Sbenz", "El Morinke"],
         "location": "Sala El Nido (Papagayo Tenerife)"
