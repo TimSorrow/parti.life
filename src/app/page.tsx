@@ -3,7 +3,7 @@ import Hero from '@/components/home/Hero'
 import EventCard from '@/components/events/EventCard'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Filter, CalendarSearch, ArrowRight, TrendingUp, Music, Palmtree, Ghost } from 'lucide-react'
+import { Filter, CalendarSearch, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function LandingPage() {
@@ -27,155 +27,185 @@ export default async function LandingPage() {
   const events = eventsData as any[] | null
 
   return (
-    <div className="min-h-screen bg-background text-white selection:bg-primary selection:text-white">
+    <div className="min-h-screen bg-background text-on-surface selection:bg-primary selection:text-white">
       <Hero />
 
       {/* Upcoming Events Section */}
-      <section id="events" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div className="max-w-xl">
-            <h2 className="text-4xl sm:text-5xl font-display font-black tracking-tighter mb-4 text-white uppercase italic">
-              Upcoming <span className="text-primary tracking-normal">Events</span>
+      <section id="events" className="max-w-[1440px] mx-auto px-8 py-32 relative">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
+          <div className="transform -rotate-1">
+            <h2 className="font-headline text-6xl md:text-8xl font-black italic uppercase leading-none mb-4 text-white">
+              UPCOMING <span className="text-primary">EVENTS</span>
             </h2>
-            <p className="text-gray-500 text-lg leading-relaxed">
+            <p className="text-secondary font-black italic text-xl uppercase tracking-widest mt-4">
               Find the hottest parties, beach clubs and island experiences in Tenerife.
             </p>
           </div>
 
           <div className="flex items-center gap-4">
             <Tabs defaultValue="all" className="w-auto">
-              <TabsList className="bg-white/5 border border-white/5 p-1 rounded-full h-auto">
-                <TabsTrigger value="all" className="rounded-full px-6 py-2 text-xs font-bold uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-white transition-all">All</TabsTrigger>
-                <TabsTrigger value="today" className="rounded-full px-6 py-2 text-xs font-bold uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Today</TabsTrigger>
-                <TabsTrigger value="weekend" className="rounded-full px-6 py-2 text-xs font-bold uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Weekend</TabsTrigger>
+              <TabsList className="bg-white/5 border border-white/5 p-1 rounded-none h-auto">
+                <TabsTrigger value="all" className="rounded-none px-6 py-3 text-xs font-headline font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-white transition-all italic">All</TabsTrigger>
+                <TabsTrigger value="today" className="rounded-none px-6 py-3 text-xs font-headline font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-white transition-all italic">Today</TabsTrigger>
+                <TabsTrigger value="weekend" className="rounded-none px-6 py-3 text-xs font-headline font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-white transition-all italic">Weekend</TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button variant="outline" size="icon" className="rounded-full border-white/10 hover:bg-white/5 h-12 w-12 shrink-0">
-              <Filter className="h-4 w-4" />
+            <Button variant="outline" size="icon" className="rounded-none border-white hover:bg-primary hover:text-white hover:border-primary h-12 w-12 shrink-0 transition-colors">
+              <Filter className="h-5 w-5" />
             </Button>
           </div>
         </div>
 
         {events && events.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {events.map((event) => (
+            {events.map((event, index) => (
               <EventCard
                 key={event.id}
                 event={event}
                 userProfile={profile}
+                index={index}
               />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border-2 border-dashed border-white/5">
-            <CalendarSearch className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">No events found</h3>
-            <p className="text-gray-500">Check back later for new updates.</p>
+          <div className="text-center py-24 bg-surface border-4 border-dashed border-white/10 max-w-4xl mx-auto transform rotate-1">
+            <CalendarSearch className="h-16 w-16 text-primary mx-auto mb-6 animate-pulse" />
+            <h3 className="text-3xl font-headline font-black italic text-white uppercase mb-3">No events found</h3>
+            <p className="text-white/60 font-headline font-black italic uppercase text-sm">Check back later for new targets.</p>
           </div>
         )}
 
-        <div className="mt-16 text-center">
-          <Button variant="outline" size="lg" className="rounded-full px-10 py-6 border-white/10 hover:bg-white/5 text-sm font-bold uppercase tracking-widest group transition-all">
-            View All Events <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
+        <div className="mt-20 text-center">
+          <Link href="/events" className="persona-btn text-xl group inline-flex items-center gap-2 select-none">
+            VIEW ALL EVENTS <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+          </Link>
         </div>
       </section>
 
       {/* Explore by Vibe Section */}
-      <section className="bg-white/2 py-24 mb-20 border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-display font-black tracking-tighter mb-4 text-white uppercase italic">
-              Explore <span className="text-primary tracking-normal">by Vibe</span>
+      <section className="py-32 px-8 max-w-[1440px] mx-auto relative">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8">
+          <div className="transform -rotate-1">
+            <h2 className="font-headline text-6xl md:text-8xl font-black italic uppercase leading-none mb-4 text-white">
+              <span className="text-primary">EXPLORE</span> BY<br/>
+              <span className="bg-white text-black px-4">VIBE</span>
             </h2>
-            <p className="text-gray-500 text-lg">Whatever you&apos;re feeling, we&apos;ve got it.</p>
+            <p className="text-secondary font-black italic text-xl uppercase tracking-widest mt-4">Find your rhythm in the island's best spots</p>
           </div>
+          <Link href="/events" className="persona-btn text-xl group select-none flex items-center gap-2">
+            VIEW ALL <span className="material-symbols-outlined inline-block group-hover:translate-x-2 transition-transform">trending_flat</span>
+          </Link>
+        </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { name: 'Beach Clubs', icon: Palmtree, color: 'from-blue-600/20 to-cyan-500/20', img: '/images/vibe-beach.png' },
-              { name: 'Techno Raves', icon: Music, color: 'from-purple/20 to-primary/20', img: '/images/vibe-techno.png' },
-              { name: 'Secret Garden', icon: Ghost, color: 'from-green-600/20 to-emerald-500/20', img: '/images/vibe-garden.png' },
-              { name: 'Luxury VIP', icon: TrendingUp, color: 'from-amber-600/20 to-orange-500/20', img: '/images/vibe-vip.png' }
-            ].map((vibe, i) => (
-              <Link href={`/search?vibe=${vibe.name}`} key={i} className="group relative aspect-[3/4] rounded-3xl overflow-hidden border border-white/5">
-                <img src={vibe.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60" alt={vibe.name} />
-                <div className={`absolute inset-0 bg-gradient-to-t ${vibe.color} opacity-80`}></div>
-                <div className="absolute inset-x-0 bottom-0 p-6 z-10">
-                  <vibe.icon className="h-8 w-8 text-white mb-3" />
-                  <h3 className="text-xl font-bold text-white tracking-tight">{vibe.name}</h3>
-                  <div className="h-1 w-12 bg-primary mt-3 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-                </div>
-              </Link>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {/* Nightlife */}
+          <Link href="/events?q=Nightlife" className="vibe-card relative h-[500px] overflow-hidden cursor-pointer group block">
+            <img className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnu44meaK8PIcN6MA_BGSn9PlGTv1q_MLIjtU2nYn3L247Xv7ICH2zXJSrUQJYZHfzr1_MywSWB42jIq_hHBm5CrYmXVrPf-4k4hfaCmCV9CHPYBkWaFtR5ul7D8vr6-Th3X4qJQlTwseYdRb2RhT5IPzftQ7_p2Vcs8_vYF9vahPoftLmX0WSJ9eztWAUEHk-v5bx5x4XmMNLZEsJMXIarlVtRjiA4kSxFNYKf0Luv4se3534Z274Y0orkDfjrtyraBhbQB6dIbw" alt="Nightlife" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-black/40 to-transparent mix-blend-multiply opacity-60"></div>
+            <div className="absolute bottom-10 left-8 right-8 z-10">
+              <h3 className="font-headline text-5xl font-black italic uppercase leading-none text-white drop-shadow-lg">Nightlife</h3>
+              <div className="speech-bubble mt-4 text-xs font-label">Elite Clubs & Lounges</div>
+            </div>
+          </Link>
+
+          {/* Festivals */}
+          <Link href="/events?q=Festivals" className="vibe-card relative h-[500px] overflow-hidden cursor-pointer group md:translate-y-16 block">
+            <img className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYQXB9pLHJGnMxFj9YAh4BTFuSscOVr14UG9MxB05UonGsNCaj5eOQaG2rwemDbwVgVAZzjmGTDYucbUQpDKbsjPpY63lqtH3i4qNWppj2_RErzGP45bLTkM3Kot_YWfVmK5arR6SVhWMWdVM9BNU9cz68yFvzc8eY83H_oJHj5JCwdF-A0w60JvNlscJ_QAxU4rhudTjnyZ_4BhC-T1Q8S28_7oRRxK4G2M2KQ8zG-RkxY7vraN5qMaHbdrNEUcfbIwtbo0QIpf0" alt="Festivals" />
+            <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-black/40 to-transparent mix-blend-multiply opacity-60"></div>
+            <div className="absolute bottom-10 left-8 right-8 z-10">
+              <h3 className="font-headline text-5xl font-black italic uppercase leading-none text-white drop-shadow-lg">Festivals</h3>
+              <div className="speech-bubble mt-4 text-xs font-label">Large Scale Raves</div>
+            </div>
+          </Link>
+
+          {/* Beach */}
+          <Link href="/events?q=Beach" className="vibe-card relative h-[500px] overflow-hidden cursor-pointer group block">
+            <img className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbw0Qn3xvAXEfuo5A1-Kc_DvJ4YySJE-iztXNQXL2DFHWnngYRWwpWeS--NTNT9XBed-4LJn1ql8zS_7HcGtNhkjqel0F-XgledzQu3XPIOE7kYFdTHCrYRXNt2-ONU8qfm7iN_E3Y3_CWPUuU4PwpbgZxvPtTIUexm65ABR9X077EYqHMJiJ0Qs_kK36OrGQU7FZaeNYsSV8URwmTRSjvIWENoo7RXCCOuz-kwKA7jAAuxzWZXRRTusoLKzsDxo19TCpWfYYeIvU" alt="Beach" />
+            <div className="absolute inset-0 bg-gradient-to-t from-accent-purple/80 via-black/40 to-transparent mix-blend-multiply opacity-60"></div>
+            <div className="absolute bottom-10 left-8 right-8 z-10">
+              <h3 className="font-headline text-5xl font-black italic uppercase leading-none text-white drop-shadow-lg">Beach</h3>
+              <div className="speech-bubble mt-4 text-xs font-label">Day Parties & Sunsets</div>
+            </div>
+          </Link>
+
+          {/* Live Music */}
+          <Link href="/events?q=Live" className="vibe-card relative h-[500px] overflow-hidden cursor-pointer group md:translate-y-16 block">
+            <img className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf4Ty94-suhmjoUhOCLkoCopTmq31sIl-_dmRd9rX3eMj5wpH4uiOW-b-0uJui2pNcnSHmibUH0CgZ4HJfcgvLwuYgO5GUl9P7nM0PkexAwLdik0c8QGNUerJf3McDKtPoSCpnwCq1xeDtCYnDwZnygzoZ81Olu4NsloRQ2MfkA8iYQ5DUPxoFViP1ryOmGJq3jtSSlzZc2G-qfF2zhGU1FGUDQtbxn5vda15jFPquAa01aB3OM7-TTdwI-2REbzOzUKpODZmj0ng" alt="Live Music" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-black/40 to-transparent mix-blend-multiply opacity-60"></div>
+            <div className="absolute bottom-10 left-8 right-8 z-10">
+              <h3 className="font-headline text-5xl font-black italic uppercase leading-none text-white drop-shadow-lg">Live Music</h3>
+              <div className="speech-bubble mt-4 text-xs font-label">Bands & Solo Acts</div>
+            </div>
+          </Link>
         </div>
       </section>
 
       {/* Trending Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-center">
-          <div className="lg:col-span-1">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-              <TrendingUp className="h-3 w-3" /> Popular Right Now
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-display font-black tracking-tighter mb-6 text-white uppercase italic">
-              Trending in <span className="text-primary tracking-normal">Tenerife</span>
-            </h2>
-            <p className="text-gray-500 text-lg leading-relaxed mb-10">
-              The events and locations everyone is talking about this week. Secure your spot before they sell out.
-            </p>
-            <Button className="bg-white text-black hover:bg-gray-200 px-10 py-6 rounded-full font-bold shadow-xl transition-all transform hover:scale-105">
-              View Trending List
-            </Button>
+      <section className="py-32 bg-surface relative overflow-hidden mt-20">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 skew-x-12 -mr-32"></div>
+        <div className="max-w-[1440px] mx-auto px-8 mb-20 relative">
+          <h2 className="font-headline text-6xl md:text-8xl font-black italic uppercase tracking-tighter text-white">
+            DON'T <span className="knockout-text">MISS</span> OUT
+          </h2>
+          <div className="mt-4 flex items-center gap-4">
+            <div className="h-1 w-24 bg-primary"></div>
+            <p className="text-white/60 font-black italic uppercase text-lg font-headline">Hottest events trending this week</p>
           </div>
-          <div className="lg:col-span-2 space-y-4">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="flex items-center gap-6 p-4 rounded-3xl bg-white/5 border border-white/5 hover:border-primary/30 transition-all group">
-                <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0">
-                  <img src="/images/hero-bg-v2.webp" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Trending" />
-                </div>
-                <div className="flex-grow">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Sold Out Soon</span>
-                    <span className="text-[10px] font-bold text-gray-500 tracking-widest uppercase">Aug 15</span>
-                  </div>
-                  <h4 className="text-lg font-bold text-white group-hover:text-primary transition-colors">Ocean View Pool Rave 2024</h4>
-                  <p className="text-xs text-gray-400 mt-1">Costa Adeje • Luxury Venue</p>
-                </div>
-                <div className="pr-4 hidden sm:block">
-                  <div className="text-primary font-black text-2xl italic tracking-tighter opacity-20 group-hover:opacity-100 transition-opacity">0{item}</div>
-                </div>
+        </div>
+
+        <div className="flex overflow-x-auto pb-12 px-8 gap-12 scrollbar-hide">
+          {events && events.length > 0 ? (
+            events.slice(0, 4).map((event, index) => (
+              <div key={event.id} className="flex-shrink-0 w-[450px]">
+                <EventCard
+                  event={event}
+                  userProfile={profile}
+                  index={index}
+                />
               </div>
-            ))}
-          </div>
+            ))
+          ) : (
+            <div className="text-center py-12 text-white/50 font-headline font-black italic uppercase">
+              No trending events listed
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Subscription CTA Section (Redesigned as Newsletter) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 mb-10">
-        <div className="relative rounded-[3rem] overflow-hidden bg-gradient-to-r from-[#121212] via-[#1A1A1A] to-[#121212] border border-white/5 p-12 sm:p-20 text-center">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 -z-0"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple/10 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2 -z-0"></div>
-
-          <div className="relative z-10 max-w-2xl mx-auto">
-            <h2 className="text-4xl sm:text-6xl font-display font-black tracking-tighter mb-6 text-white uppercase italic leading-none">
-              Never Miss <span className="text-primary tracking-normal">a Beat</span>
+      {/* Newsletter Section */}
+      <section className="py-40 relative bg-black overflow-hidden mt-10">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-1 bg-white opacity-20 transform -rotate-3 translate-y-20"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-primary transform rotate-2 -translate-y-20"></div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto px-8 relative z-10 text-center">
+          <div className="mb-12">
+            <span className="knockout-text text-3xl font-black italic mb-6 font-headline">WAKE UP, GET UP, GET OUT THERE</span>
+            <h2 className="font-headline text-7xl md:text-[100px] font-black italic uppercase leading-[0.85] mt-6 transform -rotate-1 text-white">
+              NEVER MISS<br/>
+              <span className="text-primary italic">A PARTY.</span>
             </h2>
-            <p className="text-gray-400 text-lg mb-12">
-              Subscribe to our newsletter and get exclusive access to secret garden raves and early-bird tickets.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                className="bg-white/5 border border-white/10 rounded-full px-8 py-4 text-white focus:outline-none focus:border-primary flex-grow text-sm font-medium"
-                placeholder="your@email.com"
-                type="email"
-              />
-              <Button className="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-full font-bold shadow-lg shadow-primary/20 transition-all text-sm uppercase tracking-widest h-auto">
-                Join Now
-              </Button>
-            </div>
           </div>
+          <p className="text-white/80 font-headline font-black italic text-xl mb-16 max-w-2xl mx-auto uppercase">
+            Curated event recommendations and VIP access delivered directly to your inbox.
+          </p>
+          
+          <form className="flex flex-col md:flex-row gap-0 max-w-2xl mx-auto transform -rotate-1">
+            <input 
+              className="flex-1 bg-white border-none px-8 py-6 text-black font-black italic text-xl focus:ring-4 focus:ring-primary outline-none transition-all placeholder-black/50 font-headline" 
+              placeholder="ENTER YOUR EMAIL..." 
+              type="email" 
+              required
+            />
+            <button className="bg-primary text-white font-headline font-black italic text-2xl px-12 py-6 uppercase hover:bg-white hover:text-black transition-all border-l-4 border-black font-headline">
+              SUBSCRIBE
+            </button>
+          </form>
+          
+          <p className="text-white/40 text-xs mt-12 font-black italic uppercase tracking-tighter font-label">
+            By subscribing you agree to the Terms of Phantasy
+          </p>
         </div>
       </section>
     </div>

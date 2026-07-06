@@ -53,7 +53,7 @@ export default async function AdminDashboard({
     const allProfiles = allProfilesData || []
 
     return (
-        <div className="container px-4 py-8 mx-auto">
+        <div className="container px-4 pt-28 pb-8 mx-auto">
             <div className="flex flex-col gap-8">
                 <div className="flex items-center gap-4">
                     <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary">

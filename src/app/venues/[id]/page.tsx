@@ -12,18 +12,18 @@ export default async function VenueDetailsPage({
 
     // Get current user profile for admin check
     const { data: { user } } = await supabase.auth.getUser()
-    const { data: profileData } = user
+    const { data: profileData } = (user
         ? await supabase.from('profiles').select('*').eq('id', user.id).single()
-        : { data: null }
+        : { data: null }) as any
 
     const isAdmin = profileData?.role === 'admin'
 
-    // Fetch venue from database
-    const { data: venue } = await supabase
+    const { data: venueData } = await supabase
         .from('venues')
         .select('*')
         .eq('id', id)
         .single()
+    const venue = venueData as any
 
     if (!venue) {
         notFound()

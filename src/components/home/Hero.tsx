@@ -1,93 +1,67 @@
-import { Button } from '@/components/ui/button'
-import { Search, Calendar as CalendarIcon } from 'lucide-react'
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Hero() {
+    const router = useRouter()
+    const [searchVal, setSearchVal] = useState('')
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (searchVal.trim()) {
+            router.push(`/events?q=${encodeURIComponent(searchVal)}`)
+        }
+    }
+
     return (
-        <section className="relative pt-20 h-screen max-h-[900px] min-h-[700px] w-full overflow-hidden bg-background flex items-center">
-            {/* Hero Background with Images & Gradients */}
-            <div className="absolute inset-0 w-full h-full">
-                <div className="relative w-full h-full">
-                    {/* Centered sharp image - Cropped version to remove side screens */}
-                    <img
-                        alt="Hero Event"
-                        className="w-full h-full object-cover opacity-100"
-                        src="/images/hero_concert_background.png"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90 z-20"></div>
-                    <div className="absolute inset-0 bg-black/20 z-10"></div>
-                </div>
+        <section className="relative min-h-screen w-full flex flex-col items-center justify-center pt-20">
+            {/* Aggressive Background Splitting */}
+            <div className="absolute inset-0 z-0 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80"></div>
+                {/* Dynamic Geometric Shapes */}
+                <div className="absolute top-1/4 -left-20 w-96 h-96 bg-secondary opacity-10 blur-3xl rounded-full"></div>
+                <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent-purple opacity-10 blur-3xl rounded-full"></div>
             </div>
-
-            <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full pb-20 pt-10 z-30">
-                <div className="max-w-5xl text-center mx-auto w-full">
-                    <div className="mb-10 sm:mb-12 select-none">
-                        <h1 className="text-[5rem] sm:text-[7rem] md:text-[9rem] lg:text-[11rem] leading-none font-display font-black tracking-tighter text-image-clip drop-shadow-2xl">
-                            parti.life
-                        </h1>
-                        <p className="text-lg sm:text-xl text-gray-300 font-light mt-4 tracking-wide max-w-2xl mx-auto">
-                            The ultimate guide to Tenerife&apos;s nightlife.
-                        </p>
-                    </div>
-
-                    {/* Search Bar */}
-                    <div className="max-w-3xl mx-auto relative group">
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple via-primary to-purple rounded-2xl opacity-75 blur-sm group-hover:opacity-100 transition duration-500 animate-gradient"></div>
-                        <div className="relative bg-[#121212] rounded-2xl p-2 sm:p-3 shadow-2xl flex flex-col md:flex-row gap-2">
-                            <div className="flex-grow flex items-center bg-[#1E1E1E] rounded-xl px-4 py-3 border border-white/5 focus-within:border-primary/50 transition-all">
-                                <Search className="text-gray-500 mr-3 h-5 w-5" />
-                                <input
-                                    className="bg-transparent border-none focus:ring-0 w-full text-white placeholder-gray-500 font-medium text-lg outline-none"
-                                    placeholder="Search events, artists..."
-                                    type="text"
-                                />
-                            </div>
-                            <div className="flex-grow md:flex-none md:w-56 flex items-center bg-[#1E1E1E] rounded-xl px-4 py-3 border border-white/5 focus-within:border-primary/50 transition-all">
-                                <CalendarIcon className="text-gray-500 mr-3 h-5 w-5" />
-                                <input
-                                    className="bg-transparent border-none focus:ring-0 w-full text-white placeholder-gray-500 font-medium text-lg outline-none"
-                                    placeholder="Any Date"
-                                    type="text"
-                                />
-                            </div>
-                            <button className="bg-gradient-to-r from-primary to-purple hover:from-primary/90 hover:to-purple/90 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center">
-                                Search
-                            </button>
-                        </div>
-                        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-400 items-center justify-center px-2">
-                            <span className="font-bold uppercase tracking-wider text-gray-500">Trending:</span>
-                            <Link href="/search?q=Carnival" className="hover:text-primary transition-colors flex items-center group">
-                                <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary mr-2 transition-colors"></span>Carnival
-                            </Link>
-                            <Link href="/search?q=Boat Parties" className="hover:text-primary transition-colors flex items-center group">
-                                <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary mr-2 transition-colors"></span>Boat Parties
-                            </Link>
-                            <Link href="/search?q=Rooftops" className="hover:text-primary transition-colors flex items-center group">
-                                <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary mr-2 transition-colors"></span>Rooftops
-                            </Link>
-                        </div>
-                    </div>
+            
+            <div className="relative z-10 w-full max-w-6xl px-8 text-center flex flex-col items-center">
+                <div className="mb-6 transform -rotate-2">
+                    <span className="text-white text-2xl font-black italic uppercase tracking-widest bg-black px-4 py-1 font-headline">Welcome to the Palace</span>
                 </div>
-
-                {/* Stats Bar */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 sm:mt-24 border-t border-white/10 pt-8 max-w-5xl mx-auto w-full">
-                    <div className="text-center">
-                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">50+</div>
-                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Active Events</div>
+                
+                <h1 className="font-headline font-black italic text-8xl md:text-[160px] tracking-tighter leading-[0.8] mb-12 drop-shadow-[15px_15px_0px_rgba(255,0,60,0.8)] text-white">
+                    <span className="block">PARTI</span>
+                    <span className="block text-right -mr-12 md:-mr-24 knockout-text">LIFE</span>
+                </h1>
+                
+                <p className="font-headline text-2xl md:text-4xl text-white italic font-black uppercase mb-16 max-w-3xl transform skew-x-[-10deg]">
+                    The Electric Pulse of <span className="text-primary underline decoration-4">Tenerife's</span> Nightlife
+                </p>
+                
+                {/* Persona Stylized Search */}
+                <form onSubmit={handleSearch} className="w-full max-w-4xl search-bar-persona p-2 flex flex-col md:flex-row items-center gap-4 group">
+                    <div className="flex-1 flex items-center px-8 gap-4 w-full">
+                        <span className="material-symbols-outlined text-white text-4xl">search</span>
+                        <input 
+                            className="bg-transparent border-none text-white placeholder-white/60 w-full focus:ring-0 font-headline font-black italic text-2xl uppercase italic outline-none" 
+                            placeholder="TARGET AN EVENT..." 
+                            type="text"
+                            value={searchVal}
+                            onChange={(e) => setSearchVal(e.target.value)}
+                        />
                     </div>
-                    <div className="text-center">
-                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">12</div>
-                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Secret Parties</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">5k+</div>
-                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Party Goers</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-2xl sm:text-3xl font-display font-bold text-white mb-1">100%</div>
-                        <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Island Vibe</div>
-                    </div>
-                </div>
+                    <button 
+                        type="submit"
+                        className="bg-white text-black px-16 py-6 font-headline font-black italic text-3xl uppercase hover:bg-primary hover:text-white transition-all w-full md:w-auto"
+                    >
+                        GO!
+                    </button>
+                </form>
+            </div>
+            
+            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+                <span className="font-black italic text-xs tracking-tighter font-label">SCROLL DOWN</span>
+                <span className="material-symbols-outlined text-primary text-4xl animate-bounce">expand_more</span>
             </div>
         </section>
     )

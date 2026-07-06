@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,700;0,900;1,900&family=Manrope:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "persona-red": "#D80000",
+                        "persona-black": "#0e0e0e",
+                        "surface": "#0e0e0e",
+                        "on-surface": "#ffffff",
+                    },
+                    fontFamily: {
+                        headline: ["Epilogue"],
+                        display: ["Epilogue"],
+                        body: ["Manrope"],
+                        label: ["Plus Jakarta Sans"]
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Variables */
+        :root {
+            --red: #D80000;
+            --black: #0e0e0e;
+            --white: #ffffff;
+        }
+
+        /* Core Utilities */
+        body { cursor: crosshair; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--red); }
+        
+        /* Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.05;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)"/%3E%3C/svg%3E');
+        }
+
+        /* Halftone Pattern */
+        .halftone {
+            background-image: radial-gradient(var(--red) 2px, transparent 2.5px);
+            background-size: 12px 12px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+        .persona-float { animation: float 5s ease-in-out infinite; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes glitch {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 2px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, -2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, 2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 2px); }
+            100% { clip-path: inset(30% 0 50% 0); transform: translate(0); }
+        }
+        
+        .glitch-text {
+            position: relative;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+        .glitch-text::before {
+            color: #0ff;
+            z-index: -1;
+            animation: glitch 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
+            animation-play-state: paused;
+        }
+        .glitch-text::after {
+            color: #f0f;
+            z-index: -2;
+            animation: glitch 0.4s cubic-bezier(.25, .46, .45, .94) reverse both infinite;
+            animation-play-state: paused;
+        }
+        .group:hover .glitch-text::before,
+        .group:hover .glitch-text::after {
+            animation-play-state: running;
+        }
+
+        /* Shapes */
+        .slant-cut { clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%); }
+        .slant-cut-reverse { clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%); }
+        .jagged-edge { clip-path: polygon(0 0, 95% 5%, 100% 20%, 90% 80%, 100% 100%, 5% 95%, 0 80%, 10% 20%); }
+        .star-shape { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        
+        /* Brutalism */
+        .neo-brutalism {
+            border: 4px solid var(--black);
+            box-shadow: 12px 12px 0px var(--red);
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .neo-brutalism:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 16px 16px 0px var(--red);
+        }
+        .neo-brutalism:active {
+            transform: translate(8px, 8px);
+            box-shadow: 4px 4px 0px var(--red);
+        }
+        .neo-brutalism-white {
+            border: 4px solid var(--white);
+            box-shadow: 10px 10px 0px rgba(255,255,255,0.2);
+        }
+
+        /* Text Effects */
+        .text-stroke {
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1);
+        }
+        .text-shadow-solid { text-shadow: 6px 6px 0px var(--black); }
+        .text-shadow-red { text-shadow: 8px 8px 0px var(--red); }
+        
+        /* Ticket Cutout */
+        .ticket {
+            mask-image: radial-gradient(circle at 0% 50%, transparent 20px, black 21px),
+                        radial-gradient(circle at 100% 50%, transparent 20px, black 21px);
+            mask-size: 51% 100%;
+            mask-repeat: no-repeat;
+            mask-position: left, right;
+        }
+
+        /* Hover reveals */
+        .grayscale-hover { filter: grayscale(100%) contrast(120%); transition: filter 0.4s ease; }
+        .group:hover .grayscale-hover { filter: grayscale(0%) contrast(100%); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-persona-red selection:text-white overflow-x-hidden">
+    <div class="noise-overlay"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-md border-b-4 border-persona-red px-6 py-4 flex justify-between items-center transition-transform duration-300 transform">
+        <div class="font-headline uppercase tracking-tighter text-3xl font-black italic text-white drop-shadow-[2px_2px_0px_#D80000] hover:scale-105 transition-transform cursor-pointer group">
+            <span class="glitch-text" data-text="ELECTRIC PULSE">ELECTRIC PULSE</span>
+        </div>
+        <div class="flex gap-6 items-center">
+            <button class="w-10 h-10 bg-white text-black flex items-center justify-center rounded-none border-2 border-black hover:bg-persona-red hover:text-white transition-colors rotate-3 hover:rotate-12">
+                <span class="material-symbols-outlined font-bold">search</span>
+            </button>
+            <div class="relative group cursor-pointer">
+                <span class="material-symbols-outlined text-white group-hover:text-persona-red transition-colors text-3xl">notifications</span>
+                <span class="absolute top-0 right-0 w-3 h-3 bg-persona-red rounded-full animate-ping"></span>
+                <span class="absolute top-0 right-0 w-3 h-3 bg-persona-red rounded-full border-2 border-black"></span>
+            </div>
+            <div class="w-12 h-12 rounded-none border-4 border-persona-red overflow-hidden active:skew-x-12 transition-transform cursor-pointer rotate-[-4deg] hover:rotate-0">
+                <img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMQOUzE5SVyvBgXNtQiDNQa6xXwLnUKAFgy1IxSkrOebOjXUO4S6gK7Zn8Bco6PPNWO7biGyQGz1OR7rTlXHFpRW3MW4w7xZ9BNJ2srXXK3lTRLYf58srd84fAfDzesBbiECHzwOkDrSHqqHZXiiXN4V85O8_7ziCjGzpzHtQ721sP9DyizlNjDyNfW8zpxbQUBqE3XY7pTDFvgsCiSPRSbUYndqfI5gD3zfz4ebZwuOuFFb7Av1ex" alt="User Avatar"/>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20 pb-32">
+        <!-- Hero Section -->
+        <section class="relative w-full min-h-[85vh] flex flex-col items-center justify-center overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 bg-persona-red halftone opacity-30 z-0"></div>
+            <div class="absolute inset-0 z-0 scale-110 rotate-3">
+                <div class="w-full h-full opacity-40 mix-blend-luminosity" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLt6ZYIj1tZuy0WLd-898wNvHlXOfLOAOCLimxcbVu-EMURyWYpGyvOShEZ_JG3lW76sOdpXnswY-EJ_IHNkNHOiGWhvINJK1tEhfzXbJ2LM1xlqx7tBSJG2IbggvUBX6pxpwJMWUprrV4XLL3ljDwgmNb0nlHmVU16vCOjm93Rrr6auslyjNNvZdkUmUxFH7AmZL_mr0sY8IvLTLyaaOZGHJJOBhpB4R8R3T6lacRSCAPC_NLm6xpm52yKcporiuJkuqBRYnzLm'); background-size: cover; background-position: center; clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);"></div>
+            </div>
+            
+            <!-- Marquee Text Background -->
+            <div class="absolute top-1/4 left-0 w-full overflow-hidden opacity-20 -rotate-6 z-10 pointer-events-none">
+                <div class="animate-marquee font-display font-black text-[15vw] whitespace-nowrap text-stroke italic">
+                    THE TAKEOVER IS HERE /// THE TAKEOVER IS HERE /// THE TAKEOVER IS HERE ///
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="relative z-20 w-full max-w-7xl px-6 flex flex-col items-center text-center mt-12 group">
+                <div class="bg-white text-black px-8 py-3 -rotate-2 neo-brutalism inline-block mb-6 relative">
+                    <div class="absolute -top-3 -right-3 w-6 h-6 bg-persona-red star-shape animate-spin-slow"></div>
+                    <h2 class="font-display font-black text-2xl md:text-4xl uppercase italic tracking-tighter">THE TAKEOVER IS HERE</h2>
+                </div>
+                
+                <h1 class="font-display font-black text-[15vw] md:text-[12vw] leading-none uppercase italic text-white text-shadow-red -rotate-3 hover:scale-105 transition-transform duration-500 cursor-default">
+                    <span class="glitch-text inline-block" data-text="NEON">NEON</span><br/>
+                    <span class="glitch-text inline-block text-black text-shadow-solid ml-12" data-text="JUNGLE">JUNGLE</span>
+                </h1>
+            </div>
+
+            <!-- Floating Stars -->
+            <div class="absolute top-32 right-16 w-24 h-24 bg-persona-red star-shape animate-pulse-fast opacity-80 z-10"></div>
+            <div class="absolute bottom-20 left-16 w-12 h-12 bg-white star-shape opacity-90 z-10 persona-float"></div>
+        </section>
+
+        <!-- Mission Briefing & Details -->
+        <section class="px-6 -mt-16 relative z-30 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- Quick Info -->
+                <div class="lg:col-span-4 bg-persona-red text-white p-8 rotate-2 neo-brutalism z-20 relative">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-black opacity-10 slant-cut-reverse"></div>
+                    
+                    <div class="flex items-center gap-5 mb-8 group">
+                        <div class="w-14 h-14 bg-black flex items-center justify-center rounded-none transform group-hover:-rotate-12 transition-transform shadow-[4px_4px_0px_#ffffff]">
+                            <span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+                        </div>
+                        <div>
+                            <p class="font-label text-black text-sm font-black uppercase tracking-widest mb-1">When</p>
+                            <p class="font-headline font-black text-2xl uppercase italic">DEC 31 / 22:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-5 group">
+                        <div class="w-14 h-14 bg-white flex items-center justify-center rounded-none transform group-hover:rotate-12 transition-transform shadow-[4px_4px_0px_#000000]">
+                            <span class="material-symbols-outlined text-black text-3xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                        </div>
+                        <div>
+                            <p class="font-label text-black text-sm font-black uppercase tracking-widest mb-1">Where</p>
+                            <p class="font-headline font-black text-2xl uppercase italic leading-tight">HARD ROCK<br/>HOTEL</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="lg:col-span-8 bg-black text-white p-10 md:p-14 -rotate-1 neo-brutalism-white z-10 mt-4 lg:-ml-8 lg:mt-8">
+                    <div class="flex justify-between items-start mb-8">
+                        <h3 class="font-headline font-black text-4xl md:text-5xl uppercase italic inline-block bg-white text-black px-4 py-2 -rotate-2">
+                            MISSION BRIEFING
+                        </h3>
+                        <span class="material-symbols-outlined text-persona-red text-5xl animate-pulse">emergency</span>
+                    </div>
+                    
+                    <p class="font-body text-xl md:text-2xl font-bold leading-relaxed mb-8 uppercase text-gray-300">
+                        <span class="text-white bg-persona-red px-2">Crash the system.</span> Emerge from the wild. The Neon Jungle is a state of mind, not just a venue. Lose yourself in the vibrant chaos of sonic experimentation.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <span class="border-2 border-white text-white px-5 py-2 font-headline font-black text-sm uppercase hover:bg-white hover:text-black transition-colors cursor-crosshair">#ELECTRIC</span>
+                        <span class="bg-persona-red text-white px-5 py-2 font-headline font-black text-sm uppercase shadow-[4px_4px_0px_#ffffff] -rotate-3 cursor-crosshair">#JUNGLE</span>
+                        <span class="border-2 border-persona-red text-persona-red px-5 py-2 font-headline font-black text-sm uppercase hover:bg-persona-red hover:text-white transition-colors cursor-crosshair">#PULSE</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ticket Section -->
+        <section class="mt-24 px-6 max-w-7xl mx-auto relative">
+            <!-- Background decorative text -->
+            <div class="absolute -top-10 left-0 text-[10vw] font-display font-black text-stroke opacity-30 select-none z-0 pointer-events-none">
+                ACCESS GRANTED
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-8 items-stretch pt-12 relative z-10">
+                <!-- General Ticket -->
+                <div class="flex-1 bg-white text-black p-8 ticket neo-brutalism group hover:-translate-y-2 transition-transform duration-300 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute -right-10 top-10 text-8xl text-black opacity-5 font-display font-black -rotate-90">GEN</div>
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="font-headline font-black text-4xl uppercase">GENERAL</h4>
+                            <span class="material-symbols-outlined text-4xl text-persona-red">confirmation_number</span>
+                        </div>
+                        <p class="font-body font-bold text-lg uppercase text-gray-600 mb-8 max-w-[80%]">Standard admission into the heart of the storm.</p>
+                    </div>
+                    <div class="flex items-end justify-between border-t-4 border-dashed border-black pt-6">
+                        <div class="font-label font-bold text-sm tracking-widest text-persona-red uppercase">Admit One</div>
+                        <div class="bg-black text-white px-6 py-2 font-display font-black text-3xl rotate-2 shadow-[4px_4px_0px_#D80000]">
+                            $75
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIP Ticket -->
+                <div class="flex-1 bg-persona-red text-white p-8 ticket border-4 border-black shadow-[12px_12px_0px_#000000] group hover:-translate-y-2 transition-transform duration-300 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute -right-4 top-10 text-8xl text-white opacity-20 font-display font-black -rotate-90">VIP</div>
+                    <div class="absolute top-0 right-0 w-full h-full halftone opacity-20 pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="font-headline font-black text-4xl uppercase flex items-center gap-2">
+                                VIP PASS <span class="material-symbols-outlined text-yellow-300 text-3xl">star</span>
+                            </h4>
+                        </div>
+                        <p class="font-body font-bold text-lg uppercase mb-8 max-w-[80%] text-white/90">Exclusive access to the VIP Lounge & backstage pulse.</p>
+                    </div>
+                    <div class="relative z-10 flex items-end justify-between border-t-4 border-dashed border-white pt-6">
+                        <div class="font-label font-bold text-sm tracking-widest text-black uppercase bg-white px-2 py-1 -rotate-2">All Access</div>
+                        <div class="bg-black text-white px-6 py-2 font-display font-black text-3xl -rotate-2 shadow-[4px_4px_0px_#ffffff]">
+                            $250
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="flex-none flex items-center justify-center md:pl-4">
+                    <button class="bg-white text-black font-headline font-black text-4xl px-10 py-12 neo-brutalism hover:bg-persona-red hover:text-white hover:rotate-3 transition-all duration-300 uppercase italic h-full flex flex-col items-center justify-center gap-4 group">
+                        <span>GET</span>
+                        <span>TICKETS</span>
+                        <span class="material-symbols-outlined text-5xl group-hover:animate-bounce">arrow_downward</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Artists Line-up -->
+        <section class="mt-32 relative overflow-hidden py-12">
+            <!-- Background massive text -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-0 pointer-events-none opacity-20">
+                <h2 class="font-display font-black text-[20vw] leading-none uppercase italic text-stroke">
+                    LINE-UP
+                </h2>
+            </div>
+
+            <div class="relative z-10 px-6 max-w-7xl mx-auto mb-12 flex justify-between items-end">
+                <h2 class="font-display font-black text-6xl md:text-8xl uppercase italic text-white text-shadow-red tracking-tighter">
+                    THE ROSTER
+                </h2>
+                <div class="hidden md:flex gap-2">
+                    <button class="w-12 h-12 bg-white text-black neo-brutalism flex items-center justify-center hover:bg-persona-red hover:text-white"><span class="material-symbols-outlined">arrow_back</span></button>
+                    <button class="w-12 h-12 bg-white text-black neo-brutalism flex items-center justify-center hover:bg-persona-red hover:text-white"><span class="material-symbols-outlined">arrow_forward</span></button>
+                </div>
+            </div>
+
+            <div class="relative z-10 flex gap-8 overflow-x-auto pb-16 pt-8 snap-x px-6 md:px-12 no-scrollbar">
+                
+                <!-- Artist 1 -->
+                <div class="flex-none w-[320px] md:w-[400px] snap-center group cursor-pointer">
+                    <div class="relative h-[450px] bg-black neo-brutalism -rotate-2 overflow-hidden">
+                        <img class="w-full h-full object-cover grayscale-hover scale-105 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYBbgBmFIGkkq0fcpYzr4PgMj3Z8RzTon3Oo8rfF1xlFCL6wtSbtzZy968lcfUrw_s2Cko4O-fuxQs8v8wfBtq_mDnSepzyK2MuoqdNS91j8PYUXmZVd4Ya0uzHO70KfPf0g0vK9JqZs42hkUToWIVYSaF3lREl-DAoqT6-f2lid507yu4XaDN7dbQlzv_e9A05SaFPAwfq3-Dhu-km0kvEJsgviOBCNTTPu6avuLYN7GTqOyzEm-9" alt="DJ VOID"/>
+                        <!-- Glitch overlay on hover -->
+                        <div class="absolute inset-0 bg-persona-red mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <p class="text-persona-red font-label font-bold text-sm tracking-widest uppercase mb-2">Main Stage / 00:00</p>
+                            <h5 class="bg-white text-black font-headline font-black text-4xl px-4 py-2 inline-block italic rotate-1 shadow-[4px_4px_0px_#D80000]">DJ VOID</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Artist 2 -->
+                <div class="flex-none w-[320px] md:w-[400px] snap-center group cursor-pointer mt-12">
+                    <div class="relative h-[450px] bg-black neo-brutalism rotate-2 overflow-hidden">
+                        <img class="w-full h-full object-cover grayscale-hover scale-105 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaBkfql7eGijcI9D3MxvY9ucyRP0uy9yc3uQSxlCCLeBM99jpeXo4RlIobzog5AP2AtasglaD_bx2rYlq1kF_PDy88VGliMTOJ0v-ZMT5Z2S5Joqc7X-DTxnXiWex4h6G0uH86giC_EKmYxrLZi-PjbZgKWVGk10p8PCGkF0hczrRB4tbsHUTZAHO07IyHx2483akjcoxTK0NvLhOtw8hTz5AGR65cer1dounXB5BfiCryLKtENawY" alt="NOVA ECHO"/>
+                        <div class="absolute inset-0 bg-persona-red mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <p class="text-white font-label font-bold text-sm tracking-widest uppercase mb-2">Neon Room / 23:00</p>
+                            <h5 class="bg-persona-red text-white font-headline font-black text-4xl px-4 py-2 inline-block italic -rotate-2 shadow-[4px_4px_0px_#ffffff]">NOVA ECHO</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Artist 3 -->
+                <div class="flex-none w-[320px] md:w-[400px] snap-center group cursor-pointer">
+                    <div class="relative h-[450px] bg-black neo-brutalism -rotate-1 overflow-hidden">
+                        <img class="w-full h-full object-cover grayscale-hover scale-105 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWreIIu51P5F58s9Y4OmgQVUviKhOaj-02DmEi6DqfdliP1a_2RAmr6rlWW7hkDPc8ZfzdFSysd_HLzqZUDxJE_cko5GizWEjvNJvuJpY7aPjB3ZKZGm0M7d7JPAYjBbbpBEgyx_eIi6ug1Zeqq6IlAj3PmOVqcHlWFCUkQNS7t9O3ZKMW_u4gKF8kiFbC26-Swknh6KuIvVTwJMehiF6uUPBmpHvlsKRzv2YDhzrdgTrpLNFF6Cbm" alt="CORE ERROR"/>
+                        <div class="absolute inset-0 bg-persona-red mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <p class="text-persona-red font-label font-bold text-sm tracking-widest uppercase mb-2">Basement / 02:00</p>
+                            <h5 class="bg-white text-black font-headline font-black text-4xl px-4 py-2 inline-block italic rotate-3 shadow-[4px_4px_0px_#000000]">CORE ERROR</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Artist 4 -->
+                <div class="flex-none w-[320px] md:w-[400px] snap-center group cursor-pointer mt-8">
+                    <div class="relative h-[450px] bg-black neo-brutalism rotate-1 overflow-hidden">
+                        <img class="w-full h-full object-cover grayscale-hover scale-105 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxIEYJylQZrqGJmCDWJwriVE7H4IxzZ9BHy1YAozU7UzIdBZFBb06sEcPeAR5tef25aRAmdaG2DaHpt9L4AX6S5dy8YND_kHxdey7uzOpzgQMvW0Ahqa2xVzixIpzTNPmcipFvpBqTbal8gjuYY41qA1XRDo-rtDLcuKJU8RWe4h7lbGIFZty1BP6dQbdyTdP0PBrR4c41VKM2qHKjiiH3Jm5DVlnT9RaV7iqGnkn-S1bG5Cxbwm8Y" alt="STATIC FLOW"/>
+                        <div class="absolute inset-0 bg-persona-red mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <p class="text-white font-label font-bold text-sm tracking-widest uppercase mb-2">Main Stage / 01:30</p>
+                            <h5 class="bg-persona-red text-white font-headline font-black text-4xl px-4 py-2 inline-block italic -rotate-1 shadow-[4px_4px_0px_#ffffff]">STATIC FLOW</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation Shell -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-end pb-6 pt-4 px-4 bg-black/80 backdrop-blur-xl border-t-2 border-white/10">
+        <a class="flex flex-col items-center justify-center bg-white text-black rotate-2 hover:-rotate-2 scale-110 px-6 py-3 rounded-none shadow-[4px_4px_0px_#D80000] border-2 border-black active:scale-95 transition-all duration-200" href="#">
+            <span class="material-symbols-outlined font-bold" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+            <span class="font-headline font-black uppercase text-xs mt-1">Events</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-400 p-2 hover:text-persona-red hover:-translate-y-2 active:scale-90 transition-all duration-200 group" href="#">
+            <span class="material-symbols-outlined group-hover:animate-bounce">local_activity</span>
+            <span class="font-headline font-bold uppercase text-[10px] mt-1 tracking-widest">Tickets</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-400 p-2 hover:text-persona-red hover:-translate-y-2 active:scale-90 transition-all duration-200 group" href="#">
+            <span class="material-symbols-outlined group-hover:animate-bounce">stars</span>
+            <span class="font-headline font-bold uppercase text-[10px] mt-1 tracking-widest">VIP</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-400 p-2 hover:text-white hover:-translate-y-2 active:scale-90 transition-all duration-200 group" href="#">
+            <span class="material-symbols-outlined group-hover:animate-bounce">person</span>
+            <span class="font-headline font-bold uppercase text-[10px] mt-1 tracking-widest">Profile</span>
+        </a>
+    </nav>
+
+    <!-- Floating UI Flourish -->
+    <div class="fixed bottom-32 right-6 pointer-events-none z-50">
+        <div class="bg-persona-red text-white px-4 py-2 border-2 border-black font-headline font-black italic text-xl persona-float shadow-[6px_6px_0px_#000000] rotate-3 flex items-center gap-2">
+            <span class="w-3 h-3 bg-white rounded-full animate-pulse"></span>
+            COMMAND: JOIN
+        </div>
+    </div>
+</body>
+</html>

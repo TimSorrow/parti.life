@@ -146,7 +146,7 @@ export default function EditEventDialog({ event, open, onOpenChange }: EditEvent
                         <Textarea
                             id="description"
                             name="description"
-                            defaultValue={event.description}
+                            defaultValue={event.description ?? ''}
                             required
                             rows={5}
                             className="bg-background/50 resize-none"
